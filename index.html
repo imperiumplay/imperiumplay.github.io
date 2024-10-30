@@ -12,17 +12,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Soft sage to pale lavender gradient */
             background: linear-gradient(135deg, #e8eeea 0%, #f0e6ef 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #4a4a4a;
         }
-
         .container {
             text-align: center;
             padding: 2rem;
         }
-
         h1 {
             font-size: 4.5rem;
             margin: 0;
@@ -30,13 +27,23 @@
             font-weight: 300;
             animation: fadeIn 2s ease-in;
         }
-
         .highlight {
-            /* Soft sage green */
             color: #7c9885;
             font-weight: 400;
         }
-
+        .links {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        .links a {
+            color: #7c9885;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        .links a:hover {
+            color: #4a4a4a;
+        }
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -47,7 +54,6 @@
                 transform: translateY(0);
             }
         }
-
         @media (max-width: 768px) {
             h1 {
                 font-size: 3rem;
@@ -58,6 +64,10 @@
 <body>
     <div class="container">
         <h1><span class="highlight">Imperium</span>Play</h1>
+        <div class="links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+        </div>
     </div>
 </body>
 </html>
