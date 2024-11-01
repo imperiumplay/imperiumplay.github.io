@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrazyCrosswords - How to Play</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e8eeea 0%, #f0e6ef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #4a4a4a;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            font-weight: 300;
+            color: #7c9885;
+        }
+        h2 {
+            color: #7c9885;
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .gameplay-tip {
+            background: #f8f9fa;
+            border-left: 4px solid #7c9885;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .color-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .green {
+            background-color: #4CAF50;
+        }
+        .yellow {
+            background-color: #FFC107;
+        }
+        .nav-links {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .nav-links a {
+            color: #7c9885;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #4a4a4a;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-item h3 {
+            color: #7c9885;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>How to Play CrazyCrosswords</h1>
+        </div>
+
+        <div class="section">
+            <h2>Game Overview</h2>
+            <p>CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.</p>
+        </div>
+
+        <div class="section">
+            <h2>Basic Rules</h2>
+            <ul>
+                <li>Rearrange tiles to form correct words in all rows and columns</li>
+                <li>Drag tiles horizontally or vertically to swap positions</li>
+                <li>Form words that match the hints:
+                    <ul>
+                        <li>Rows: Read left to right</li>
+                        <li>Columns: Read top to bottom</li>
+                    </ul>
+                </li>
+                <li><span class="color-indicator green"></span>Correct words turn green and update the hint icon</li>
+                <li><span class="color-indicator yellow"></span>Valid words not matching hints count as bonus words</li>
+                <li>Complete the level by forming all correct words</li>
+            </ul>
+            
+            <div class="gameplay-tip">
+                <strong>Pro Tip:</strong> Look for bonus words! When you make additional valid words besides the required ones, they count as bonus points.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Controls</h2>
+            <ul>
+                <li>Tap and hold a letter to select it</li>
+                <li>Drag the letter to another position to swap</li>
+                <li>Drag backwards to undo your last swap</li>
+                <li>Tap hint buttons on the sides to see target words</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h3>What makes a valid word?</h3>
+                <p>Valid words must be at least 4 letters long and exist in our English dictionary. The game highlights valid words as you form them.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What are bonus words?</h3>
+                <p>When you form additional valid words besides the required ones, they count as bonus words. These add to your score and unlock special achievements.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I use hints?</h3>
+                <p>Tap the hint buttons on the sides of the grid. Row hints show what word you need to make horizontally, while column hints show vertical target words.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I undo a move?</h3>
+                <p>Yes! After swapping letters, you can immediately drag backwards to undo the swap. This helps when experimenting with different word combinations.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I complete a level?</h3>
+                <p>Form all the correct words shown in the hints for both rows and columns. When all words are correct, you'll automatically advance to the next level.</p>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+        </div>
+    </div>
+</body>
+</html>
