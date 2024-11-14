@@ -1,2 +1,1 @@
-applovin.com, YOUR_ID_HERE, DIRECT
-google.com, pub-YOUR_ID_HERE, DIRECT, f08c47fec0942544
+google.com, pub-7272621523356208, DIRECT, f08c47fec0942fa0
