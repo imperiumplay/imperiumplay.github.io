@@ -94,7 +94,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="/images/Icon_crazycrosswords" alt="ImperiumPlay Icon" class="game-icon">
+        <img src="images/Icon_crazycrosswords" alt="ImperiumPlay Icon" class="game-icon">
         <h1><span class="highlight">Crazy Crosswords</span>Play</h1>
         <p class="description">
             Experience the thrill of strategic conquest in ImperiumPlay. 
