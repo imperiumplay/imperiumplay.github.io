@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrazyCrosswords - How to Play</title>
+    <title>Crazy Crosswords</title>
     <style>
         body {
             margin: 0;
@@ -12,60 +12,126 @@
             background: linear-gradient(135deg, #e8eeea 0%, #f0e6ef 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #4a4a4a;
-            line-height: 1.6;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem;
-        }
-        .header {
             text-align: center;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
+        }
+        .game-icon {
+            width: 180px;
+            height: 180px;
+            margin: 2rem auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         h1 {
-            font-size: 2.5rem;
-            margin: 0;
+            font-size: 3.5rem;
+            margin: 1rem 0;
+            color: #7c9885;
             letter-spacing: 2px;
             font-weight: 300;
-            color: #7c9885;
         }
-        h2 {
-            color: #7c9885;
-            font-weight: 400;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 1.5rem auto;
+            max-width: 600px;
         }
-        .section {
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .feature-card {
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .gameplay-tip {
-            background: #f8f9fa;
-            border-left: 4px solid #7c9885;
-            padding: 1rem;
-            margin: 1rem 0;
+        .feature-card h3 {
+            color: #7c9885;
+            margin-top: 0;
         }
-        .color-indicator {
+        .store-section {
+            margin: 2rem 0;
+        }
+        .store-button {
             display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
+            padding: 1rem 2rem;
+            background: #7c9885;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 1rem;
         }
-        .green {
-            background-color: #4CAF50;
+        .store-button:hover {
+            background: #648670;
+            transform: translateY(-2px);
         }
-        .yellow {
-            background-color: #FFC107;
+        .qr-codes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+        .qr-code {
+            text-align: center;
+        }
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .qr-code p {
+            margin: 0;
+            color: #666;
+            font-weight: 500;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #666;
         }
         .nav-links {
-            text-align: center;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
         .nav-links a {
             color: #7c9885;
@@ -76,91 +142,105 @@
         .nav-links a:hover {
             color: #4a4a4a;
         }
-        .faq-item {
-            margin-bottom: 1.5rem;
-        }
-        .faq-item h3 {
-            color: #7c9885;
-            margin-bottom: 0.5rem;
+        @media (max-width: 768px) {
+            .qr-codes {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>How to Play CrazyCrosswords</h1>
+        <img src="images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords Icon" class="game-icon">
+        <h1>Crazy Crosswords</h1>
+        <p class="description">
+            Challenge your mind with this unique word puzzle game! Rearrange letters to form words both horizontally and vertically, unlock bonus words, and test your vocabulary skills.
+        </p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>Unique Gameplay</h3>
+                <p>Drag and swap letters to create words in both directions. Every puzzle offers multiple solutions for bonus points!</p>
+            </div>
+            <div class="feature-card">
+                <h3>Progressive Challenge</h3>
+                <p>Start with simple puzzles and advance to more complex grids as you improve your skills.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Bonus Words</h3>
+                <p>Discover additional valid words beyond the required ones to earn extra points and achievements.</p>
+            </div>
         </div>
 
-        <div class="section">
-            <h2>Game Overview</h2>
-            <p>CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.</p>
-        </div>
-
-        <div class="section">
-            <h2>Basic Rules</h2>
-            <ul>
-                <li>Rearrange tiles to form correct words in all rows and columns</li>
-                <li>Drag tiles horizontally or vertically to swap positions</li>
-                <li>Form words that match the hints:
-                    <ul>
-                        <li>Rows: Read left to right</li>
-                        <li>Columns: Read top to bottom</li>
-                    </ul>
-                </li>
-                <li><span class="color-indicator green"></span>Correct words turn green and update the hint icon</li>
-                <li><span class="color-indicator yellow"></span>Valid words not matching hints count as bonus words</li>
-                <li>Complete the level by forming all correct words</li>
-            </ul>
+        <div class="store-section">
+            <a href="#" class="store-button" id="downloadButton">Download Now</a>
             
-            <div class="gameplay-tip">
-                <strong>Pro Tip:</strong> Look for bonus words! When you make additional valid words besides the required ones, they count as bonus points.
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Controls</h2>
-            <ul>
-                <li>Tap and hold a letter to select it</li>
-                <li>Drag the letter to another position to swap</li>
-                <li>Drag backwards to undo your last swap</li>
-                <li>Tap hint buttons on the sides to see target words</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item">
-                <h3>What makes a valid word?</h3>
-                <p>Valid words must be at least 4 letters long and exist in our English dictionary. The game highlights valid words as you form them.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>What are bonus words?</h3>
-                <p>When you form additional valid words besides the required ones, they count as bonus words. These add to your score and unlock special achievements.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>How do I use hints?</h3>
-                <p>Tap the hint buttons on the sides of the grid. Row hints show what word you need to make horizontally, while column hints show vertical target words.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>Can I undo a move?</h3>
-                <p>Yes! After swapping letters, you can immediately drag backwards to undo the swap. This helps when experimenting with different word combinations.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>How do I complete a level?</h3>
-                <p>Form all the correct words shown in the hints for both rows and columns. When all words are correct, you'll automatically advance to the next level.</p>
+            <div class="qr-codes">
+                <div class="qr-code">
+                    <img src="/api/placeholder/150/150" alt="Play Store QR Code">
+                    <p>Google Play Store</p>
+                </div>
+                <div class="qr-code">
+                    <img src="/api/placeholder/150/150" alt="App Store QR Code">
+                    <p>Apple App Store</p>
+                </div>
             </div>
         </div>
 
         <div class="nav-links">
-            <a href="index.html">Home</a>
+            <a href="how-to-play.html">How to Play</a>
             <a href="privacy-policy.html">Privacy Policy</a>
             <a href="terms.html">Terms & Conditions</a>
         </div>
     </div>
+
+    <!-- QR Code Modal -->
+    <div class="modal" id="qrModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Scan to Download</h2>
+            <p>Use your device's camera to scan the QR code for your platform:</p>
+            <div class="qr-codes"></div>
+        </div>
+    </div>
+
+    <script>
+        const IOS_STORE = "https://apps.apple.com/app/YOUR_APP_ID";
+        const ANDROID_STORE = "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME";
+        
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isAndroid = /android/.test(userAgent);
+            const isMobile = isIOS || isAndroid;
+            
+            const downloadButton = document.getElementById('downloadButton');
+            const modal = document.getElementById('qrModal');
+            const closeBtn = document.querySelector('.close-modal');
+            
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isIOS) {
+                    window.location.href = IOS_STORE;
+                } else if (isAndroid) {
+                    window.location.href = ANDROID_STORE;
+                } else {
+                    modal.style.display = 'flex';
+                }
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', detectDevice);
+    </script>
 </body>
 </html>
