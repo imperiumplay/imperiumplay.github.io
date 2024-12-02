@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImperiumPlay</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e8eeea 0%, #f0e6ef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #4a4a4a;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+        }
+        .game-icon {
+            width: 128px;
+            height: 128px;
+            border-radius: 24px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 4px;
+            font-weight: 300;
+            animation: fadeIn 2s ease-in;
+        }
+        .highlight {
+            color: #7c9885;
+            font-weight: 400;
+        }
+        .description {
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+        .store-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .store-button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background: #7c9885;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .store-button:hover {
+            background: #648670;
+            transform: translateY(-2px);
+        }
+        .links {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        .links a {
+            color: #7c9885;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        .links a:hover {
+            color: #4a4a4a;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .description { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/images/Icon_crazycrosswords" alt="ImperiumPlay Icon" class="game-icon">
+        <h1><span class="highlight">Crazy Crosswords</span>Play</h1>
+        <p class="description">
+            Experience the thrill of strategic conquest in ImperiumPlay. 
+            Build your empire, forge alliances, and lead your armies to victory 
+            in this immersive mobile strategy game.
+        </p>
+        <div class="store-buttons">
+            <a href="#" class="store-button" id="downloadButton">
+                Download Now
+            </a>
+        </div>
+        <div class="links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+        </div>
+    </div>
+
+    <script>
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isAndroid = /android/.test(userAgent);
+            
+            // Replace these with your actual store URLs
+            const IOS_STORE = "https://apps.apple.com/app/YOUR_APP_ID";
+            const ANDROID_STORE = "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME";
+            
+            const downloadButton = document.getElementById('downloadButton');
+            
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isIOS) {
+                    window.location.href = IOS_STORE;
+                } else if (isAndroid) {
+                    window.location.href = ANDROID_STORE;
+                } else {
+                    // Show store options for desktop users
+                    alert('Download ImperiumPlay from your device\'s app store:\n\niOS: ' + IOS_STORE + '\nAndroid: ' + ANDROID_STORE);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', detectDevice);
+    </script>
+</body>
+</html>
