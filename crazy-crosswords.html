@@ -102,42 +102,15 @@
             in this immersive mobile strategy game.
         </p>
         <div class="store-buttons">
-            <a href="#" class="store-button" id="downloadButton">
+            <a href="#" class="store-button">
                 Download Now
             </a>
         </div>
         <div class="links">
+            <a href="how-to-play.html">How to Play</a>
             <a href="privacy-policy.html">Privacy Policy</a>
             <a href="terms.html">Terms & Conditions</a>
         </div>
     </div>
-
-    <script>
-        function detectDevice() {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isIOS = /iphone|ipad|ipod/.test(userAgent);
-            const isAndroid = /android/.test(userAgent);
-            
-            // Replace these with your actual store URLs
-            const IOS_STORE = "https://apps.apple.com/app/YOUR_APP_ID";
-            const ANDROID_STORE = "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME";
-            
-            const downloadButton = document.getElementById('downloadButton');
-            
-            downloadButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (isIOS) {
-                    window.location.href = IOS_STORE;
-                } else if (isAndroid) {
-                    window.location.href = ANDROID_STORE;
-                } else {
-                    // Show store options for desktop users
-                    alert('Download ImperiumPlay from your device\'s app store:\n\niOS: ' + IOS_STORE + '\nAndroid: ' + ANDROID_STORE);
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', detectDevice);
-    </script>
 </body>
 </html>
