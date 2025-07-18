@@ -45,22 +45,75 @@ const footerLinks = [
   ogUrl="https://imperiumplay.com"
   structuredData={structuredData}
 >
-  <div class="hero">
-    <div class="hero-content">
-      <h1><span class="highlight">Imperium</span>Play</h1>
-      <p class="tagline">Crafting Engaging Games</p>
-      
-      <GameShowcase 
-        icon="/images/Icon_crazycrosswords.jpg"
-        title='<span class="highlight">Crazy</span>Crosswords'
-        description="Challenge your vocabulary! Arrange letters to create valid words in both rows and columns. Every puzzle is a unique brain teaser."
-        iosUrl="https://apps.apple.com/us/app/crazy-crosswords/id6720760088"
-        androidUrl="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword"
-        gamePageUrl="/crazy-crosswords"
-        howToPlayUrl="/how-to-play"
-      />
-    </div>
-  </div>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="brand">
+          <h1><span class="highlight">Imperium</span>Play</h1>
+          <p class="tagline">Where Words Come to Life</p>
+        </div>
+        
+        <div class="featured-game">
+          <div class="game-preview">
+            <img src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords" class="game-icon">
+            <div class="game-info">
+              <h2><span class="highlight">Crazy</span>Crosswords</h2>
+              <p>Master the art of word arrangement. Create perfect crosswords by placing letters strategically in rows and columns.</p>
+              <div class="game-stats">
+                <span class="stat">🧩 Endless Puzzles</span>
+                <span class="stat">🎯 Brain Training</span>
+                <span class="stat">⭐ Free to Play</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="download-section">
+            <h3>Download Now</h3>
+            <div class="store-buttons">
+              <a href="https://apps.apple.com/us/app/crazy-crosswords/id6720760088" class="store-btn ios">
+                <span class="store-icon">📱</span>
+                <div>
+                  <small>Download on the</small>
+                  <strong>App Store</strong>
+                </div>
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword" class="store-btn android">
+                <span class="store-icon">🤖</span>
+                <div>
+                  <small>Get it on</small>
+                  <strong>Google Play</strong>
+                </div>
+              </a>
+            </div>
+            <a href="/how-to-play" class="learn-more">Learn How to Play →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="features">
+      <div class="container">
+        <h2>Why Players Love Our Games</h2>
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Strategic Thinking</h3>
+            <p>Every move matters. Plan your letter placement to create multiple words simultaneously.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🧠</div>
+            <h3>Brain Training</h3>
+            <p>Enhance vocabulary and cognitive skills with progressively challenging puzzles.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🎮</div>
+            <h3>Intuitive Gameplay</h3>
+            <p>Simple drag-and-drop mechanics make it easy to learn but challenging to master.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
   
   <Footer links={footerLinks} />
 </BaseLayout>
@@ -69,23 +122,237 @@ const footerLinks = [
 .hero {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-content h1 {
-  font-size: 4.5rem;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(124, 152, 133, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%);
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.brand {
+  text-align: left;
+}
+
+.brand h1 {
+  font-size: 5rem;
   margin: 0 0 1rem 0;
-  letter-spacing: 4px;
-  font-weight: 300;
+  letter-spacing: 3px;
+  font-weight: 200;
+  line-height: 0.9;
   animation: fadeIn 2s ease-in;
 }
 
 .tagline {
-  font-size: 1.2rem;
-  margin-bottom: 3rem;
+  font-size: 1.4rem;
+  margin: 0;
+  opacity: 0.7;
+  font-weight: 300;
+}
+
+.featured-game {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.game-preview {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.game-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.game-info h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 300;
+}
+
+.game-info p {
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.game-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: #f8f9fa;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.download-section h3 {
+  margin: 0 0 1rem 0;
+  color: #7c9885;
+  font-weight: 400;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.store-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.5rem;
+  background: #7c9885;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.store-btn:hover {
+  background: #648670;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(124, 152, 133, 0.3);
+}
+
+.store-icon {
+  font-size: 1.5rem;
+}
+
+.store-btn div {
+  text-align: left;
+}
+
+.store-btn small {
+  display: block;
   opacity: 0.8;
+  font-size: 0.75rem;
+}
+
+.learn-more {
+  color: #7c9885;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.learn-more:hover {
+  color: #648670;
+}
+
+.features {
+  padding: 5rem 2rem;
+  background: rgba(255,255,255,0.5);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  color: #4a4a4a;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature h3 {
+  color: #7c9885;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.feature p {
+  color: #666;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .brand {
+    text-align: center;
+  }
+  
+  .brand h1 {
+    font-size: 3.5rem;
+  }
+  
+  .game-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .store-buttons {
+    flex-direction: column;
+  }
+  
+  .features {
+    padding: 3rem 1rem;
+  }
 }
 </style>
