@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const footerLinks = [
+  { href: "/", text: "Home" },
+  { href: "/privacy-policy", text: "Privacy Policy" }
+];
+---
+
+<BaseLayout 
+  title="Terms & Conditions - ImperiumPlay"
+  description="Terms and Conditions for ImperiumPlay and Crazy Crosswords mobile game."
+>
+  <div class="container">
+    <h1><span class="highlight">Terms</span> & Conditions</h1>
+    
+    <p>These terms and conditions apply to the Crazy Crosswords app (hereby referred to as "Application") for mobile devices that was created by Bharat Sharma (hereby referred to as "Service Provider") as an Ad Supported service.</p>
+
+    <h2>Agreement to Terms</h2>
+    <p>Upon downloading or utilizing the Application, you are automatically agreeing to the following terms. It is strongly advised that you thoroughly read and understand these terms prior to using the Application. Unauthorized copying, modification of the Application, any part of the Application, or our trademarks is strictly prohibited. Any attempts to extract the source code of the Application, translate the Application into other languages, or create derivative versions are not permitted. All trademarks, copyrights, database rights, and other intellectual property rights related to the Application remain the property of the Service Provider.</p>
+
+    <h2>Modifications and Charges</h2>
+    <p>The Service Provider is dedicated to ensuring that the Application is as beneficial and efficient as possible. As such, they reserve the right to modify the Application or charge for their services at any time and for any reason. The Service Provider assures you that any charges for the Application or its services will be clearly communicated to you.</p>
+
+    <h2>Data and Security</h2>
+    <p>The Application stores and processes personal data that you have provided to the Service Provider in order to provide the Service. It is your responsibility to maintain the security of your phone and access to the Application. The Service Provider strongly advise against jailbreaking or rooting your phone, which involves removing software restrictions and limitations imposed by the official operating system of your device. Such actions could expose your phone to malware, viruses, malicious programs, compromise your phone's security features, and may result in the Application not functioning correctly or at all.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>Please note that the Application utilizes third-party services that have their own Terms and Conditions. Below are the links to the Terms and Conditions of the third-party service providers used by the Application:</p>
+    <ul>
+      <li><a href="https://developers.google.com/admob/terms" target="_blank" rel="noopener noreferrer">AdMob</a></li>
+      <li><a href="https://www.google.com/analytics/terms/" target="_blank" rel="noopener noreferrer">Google Analytics for Firebase</a></li>
+      <li><a href="https://firebase.google.com/terms/crashlytics" target="_blank" rel="noopener noreferrer">Firebase Crashlytics</a></li>
+      <li><a href="https://www.facebook.com/legal/terms/plain_text_terms" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+      <li><a href="https://www.appodeal.com/home/terms-of-service/" target="_blank" rel="noopener noreferrer">Appodeal</a></li>
+      <li><a href="https://unity3d.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer">Unity</a></li>
+    </ul>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions or suggestions about the Terms and Conditions, please do not hesitate to contact the Service Provider at bsharma@imperiumplay.com.</p>
+
+    <Footer links={footerLinks} />
+  </div>
+</BaseLayout>
+
+<style>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0 0 2rem 0;
+  letter-spacing: 2px;
+  font-weight: 300;
+  text-align: center;
+  animation: fadeIn 2s ease-in;
+}
+
+h2 {
+  color: #7c9885;
+  font-weight: 400;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+p {
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+ul {
+  padding-left: 2rem;
+}
+
+li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+a {
+  color: #7c9885;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #4a4a4a;
+}
+</style>

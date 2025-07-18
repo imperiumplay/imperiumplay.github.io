@@ -1,0 +1,35 @@
+---
+export interface Props {
+  links: Array<{
+    href: string;
+    text: string;
+  }>;
+}
+
+const { links } = Astro.props;
+---
+
+<div class="footer-links">
+  {links.map(link => (
+    <a href={link.href}>{link.text}</a>
+  ))}
+</div>
+
+<style>
+.footer-links {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: #7c9885;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #4a4a4a;
+}
+</style>

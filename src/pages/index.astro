@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameShowcase from '../components/GameShowcase.astro';
+import Footer from '../components/Footer.astro';
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ImperiumPlay",
+    "url": "https://imperiumplay.com",
+    "description": "Mobile game development company creating engaging word puzzle games",
+    "sameAs": [
+      "https://apps.apple.com/us/app/crazy-crosswords/id6720760088",
+      "https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Crazy Crosswords",
+    "description": "Word puzzle game where you arrange letters to create valid words in rows and columns",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": ["iOS", "Android"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+];
+
+const footerLinks = [
+  { href: "/crazy-crosswords", text: "Game Details" },
+  { href: "/how-to-play", text: "How to Play" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="ImperiumPlay - Mobile Word Puzzle Games"
+  description="ImperiumPlay creates engaging mobile word puzzle games. Play Crazy Crosswords - arrange letters to form words in rows and columns. Available on iOS and Android."
+  keywords="word games, crossword puzzle, mobile games, word puzzle, brain games"
+  ogUrl="https://imperiumplay.com"
+  structuredData={structuredData}
+>
+  <div class="hero">
+    <div class="hero-content">
+      <h1><span class="highlight">Imperium</span>Play</h1>
+      <p class="tagline">Crafting Engaging Games</p>
+      
+      <GameShowcase 
+        icon="/images/Icon_crazycrosswords.jpg"
+        title='<span class="highlight">Crazy</span>Crosswords'
+        description="Challenge your vocabulary! Arrange letters to create valid words in both rows and columns. Every puzzle is a unique brain teaser."
+        iosUrl="https://apps.apple.com/us/app/crazy-crosswords/id6720760088"
+        androidUrl="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword"
+        gamePageUrl="/crazy-crosswords"
+        howToPlayUrl="/how-to-play"
+      />
+    </div>
+  </div>
+  
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+.hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 4.5rem;
+  margin: 0 0 1rem 0;
+  letter-spacing: 4px;
+  font-weight: 300;
+  animation: fadeIn 2s ease-in;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  opacity: 0.8;
+}
+</style>

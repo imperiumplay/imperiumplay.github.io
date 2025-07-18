@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  ogUrl?: string;
+  structuredData?: any[];
+}
+
+const { title, description, keywords, ogUrl, structuredData } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  {keywords && <meta name="keywords" content={keywords}>}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  {ogUrl && <meta property="og:url" content={ogUrl}>}
+  <meta name="twitter:card" content="summary">
+  
+  {structuredData && structuredData.map(data => (
+    <script type="application/ld+json" set:html={JSON.stringify(data)} />
+  ))}
+  
+
+</head>
+<body>
+  <slot />
+</body>
+</html>

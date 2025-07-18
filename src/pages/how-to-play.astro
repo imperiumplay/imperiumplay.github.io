@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const footerLinks = [
+  { href: "/", text: "Home" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="How to Play - Crazy Crosswords"
+  description="Learn how to play Crazy Crosswords - arrange letters to form words in rows and columns."
+>
+  <div class="container">
+    <h1>How to Play <span class="highlight">CrazyCrosswords</span></h1>
+    
+    <div class="section">
+      <h2>Game Overview</h2>
+      <p>CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.</p>
+    </div>
+
+    <div class="section">
+      <h2>Basic Rules</h2>
+      <p>Follow these simple rules to master CrazyCrosswords:</p>
+      <ul>
+        <li>Rearrange tiles to form correct words in all rows and columns</li>
+        <li>Tap and drag any letter to swap it with any other letter on the board</li>
+        <li>Form words that match the hints:
+          <ul>
+            <li>Rows: Read left to right</li>
+            <li>Columns: Read top to bottom</li>
+          </ul>
+        </li>
+        <li><span class="color-indicator green"></span>Correct words turn green and update the hint icon</li>
+        <li>Complete the level by forming all correct words</li>
+      </ul>
+
+      <div class="gameplay-tip">
+        <strong>Pro Tip:</strong> With the ability to swap any letters, try focusing on completing one word at a time. Look for letters you need anywhere on the board!
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Controls</h2>
+      <p>Intuitive controls make CrazyCrosswords easy to play:</p>
+      <ul>
+        <li>Tap and hold any letter to select it</li>
+        <li>Drag the letter to any other position on the board to swap</li>
+        <li>Tap hint buttons on the sides to see target words</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Powerups</h2>
+      <p>When you need a little help, these powerups can save the day:</p>
+      <div class="powerup-section">
+        <h3>Reveal Word</h3>
+        <p>This powerup reveals the correct arrangement of letters for the currently selected hint (row or column). Use it when you're stuck on a particularly tricky word!</p>
+        
+        <h3>Shuffle Hint</h3>
+        <p>This powerup rearranges the letters in the currently selected row or column, giving you a fresh perspective that might help you spot the solution.</p>
+        
+        <h3>Using Powerups</h3>
+        <p>Powerups require coins to use. Select a hint first (row or column), then tap the powerup you want to use. The powerup will affect only the currently selected hint.</p>
+      </div>
+    </div>
+
+    <Footer links={footerLinks} />
+  </div>
+</BaseLayout>
+
+<style>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0 0 2rem 0;
+  letter-spacing: 2px;
+  font-weight: 300;
+  text-align: center;
+  animation: fadeIn 2s ease-in;
+}
+
+h2 {
+  color: #7c9885;
+  font-weight: 400;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+h3 {
+  color: #7c9885;
+  font-weight: 400;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
+p {
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+ul {
+  padding-left: 2rem;
+}
+
+li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.5s ease-in;
+}
+
+.gameplay-tip {
+  background: #f8f9fa;
+  border-left: 4px solid #7c9885;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.color-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.green {
+  background-color: #4CAF50;
+}
+
+.powerup-section {
+  background: #f4f9f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+</style>
