@@ -16,4 +16,13 @@ Allow: /
 User-agent: Claude-Web
 Allow: /
 
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot  
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
 Sitemap: https://imperiumplay.com/sitemap.xml
