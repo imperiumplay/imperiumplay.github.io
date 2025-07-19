@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.imperiumplay.CrazyCrossword",
+      "sha256_cert_fingerprints": [
+        "80:B8:E6:73:EF:24:52:E8:8B:B1:DF:A6:B7:A1:04:DF:ED:7C:1D:A1:F3:7E:9E:BB:87:77:D2:0B:01:78:47:1E"
+      ]
+    }
+  }
+]
