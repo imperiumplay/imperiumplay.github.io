@@ -187,7 +187,17 @@ const features = [
                 <div class="review-rating">
                   {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
                 </div>
-                <p class="review-text">"{review.text}"</p>
+                <p class="review-text">{review.text}</p>
+                <p class="review-author">- {review.name}</p>
+              </div>
+            ))}
+            {/* Duplicate first few cards for infinite loop effect */}
+            {reviews.slice(0, 3).map((review, index) => (
+              <div class="review-card duplicate">
+                <div class="review-rating">
+                  {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
+                </div>
+                <p class="review-text">{review.text}</p>
                 <p class="review-author">- {review.name}</p>
               </div>
             ))}
@@ -438,12 +448,15 @@ const features = [
   .reviews-carousel {
     overflow: hidden;
     position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
   }
   
   .reviews-track {
     display: flex;
     gap: 2rem;
     transition: transform 0.5s ease;
+    width: max-content;
   }
   
   .review-card {
@@ -610,7 +623,7 @@ const features = [
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('reviewsTrack');
-    const reviews = document.querySelectorAll('.review-card');
+    const reviews = document.querySelectorAll('.review-card:not(.duplicate)');
     const totalReviews = reviews.length;
     let currentIndex = 0;
     
@@ -625,8 +638,24 @@ const features = [
     }
     
     function nextSlide() {
-      const visibleCards = getVisibleCards();
-      currentIndex = (currentIndex + 1) % totalReviews;
+      currentIndex++;
+      
+      // If we've reached the end of original reviews, reset to beginning without animation
+      if (currentIndex >= totalReviews) {
+        // Let the animation complete to show the duplicated cards
+        setTimeout(() => {
+          // Quick reset to first slide without animation
+          track.style.transition = 'none';
+          currentIndex = 0;
+          updateCarousel();
+          
+          // Restore animation for next slide
+          setTimeout(() => {
+            track.style.transition = 'transform 0.5s ease';
+          }, 50);
+        }, 500);
+      }
+      
       updateCarousel();
     }
     
@@ -635,6 +664,9 @@ const features = [
     
     // Update on resize
     window.addEventListener('resize', updateCarousel);
+    
+    // Set initial transition
+    track.style.transition = 'transform 0.5s ease';
     
     // Initial setup
     updateCarousel();
