@@ -70,13 +70,8 @@ const features = [
   },
   {
     icon: "🏆",
-    title: "Daily Challenge",
-    description: "Compete in daily challenges and compare your scores on the leaderboard with other players."
-  },
-  {
-    icon: "🔍",
-    title: "Word Quest Mode",
-    description: "Enjoy our Word Connect style side mode called Word Quest for even more word puzzle fun."
+    title: "Multiple Game Modes",
+    description: "Enjoy Daily Challenges with leaderboards and the Word Connect style Word Quest mode for varied gameplay."
   }
 ];
 ---
@@ -368,9 +363,18 @@ const features = [
   }
   
   .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .feature-card {
+    flex: 1 1 250px;
+    min-width: 250px;
+    max-width: 350px;
   }
   
   .feature-card {
@@ -567,6 +571,11 @@ const features = [
     
     .phone-mockup.tertiary {
       transform: translateX(100px) translateY(40px) scale(0.85) rotate(10deg);
+    }
+    
+    .feature-card {
+      min-width: 100%;
+      max-width: 100%;
     }
   }
   
