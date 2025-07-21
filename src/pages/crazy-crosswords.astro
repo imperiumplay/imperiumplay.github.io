@@ -92,6 +92,7 @@ const features = [
           <p class="description">
             Challenge your vocabulary in this unique word puzzle game. Arrange letters on the grid to create valid words in both rows and columns, testing your word skills in this addictive puzzle experience.
           </p>
+          
           <div class="store-buttons">
             <a href="https://apps.apple.com/us/app/crazy-crosswords/id6720760088" class="store-button ios">
               <img src="/images/badges/app-store-badge.svg" alt="Download on the App Store" class="store-badge">
@@ -102,29 +103,12 @@ const features = [
           </div>
         </div>
         
-        <div class="game-preview">
-          <div class="devices-mockup">
-            <div class="phone-mockup primary">
-              <!-- Replace with actual screenshot when available -->
-              <div class="placeholder-screenshot">
-                <p>Main Gameplay</p>
-                <small>Add screenshots to /public/images/crazy-crosswords/</small>
-              </div>
-            </div>
-            <div class="phone-mockup secondary">
-              <!-- Replace with actual screenshot when available -->
-              <div class="placeholder-screenshot">
-                <p>Word Quest Mode</p>
-                <small>Add screenshots to /public/images/crazy-crosswords/</small>
-              </div>
-            </div>
-            <div class="phone-mockup tertiary">
-              <!-- Replace with actual screenshot when available -->
-              <div class="placeholder-screenshot">
-                <p>Daily Challenge</p>
-                <small>Add screenshots to /public/images/crazy-crosswords/</small>
-              </div>
-            </div>
+        <div class="game-video">
+          <div class="video-container">
+            <video controls poster="/images/crazy-crosswords/crazy crossword screen 1920.png" class="gameplay-video">
+              <source src="/images/crazy-crosswords/1920 game play video.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
@@ -151,18 +135,17 @@ const features = [
       <div class="container">
         <h2>Game Screenshots</h2>
         <div class="screenshot-gallery">
-          <!-- Replace with actual screenshots when available -->
-          <div class="screenshot placeholder">
-            <p>Gameplay Screenshot 1</p>
-            <small>Add to /images/crazy-crosswords/</small>
+          <div class="screenshot">
+            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 0.png" alt="Gameplay Screenshot" class="screenshot-img">
           </div>
-          <div class="screenshot placeholder">
-            <p>Gameplay Screenshot 2</p>
-            <small>Add to /images/crazy-crosswords/</small>
+          <div class="screenshot">
+            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 1.png" alt="Word Quest Mode" class="screenshot-img">
           </div>
-          <div class="screenshot placeholder">
-            <p>Gameplay Screenshot 3</p>
-            <small>Add to /images/crazy-crosswords/</small>
+          <div class="screenshot">
+            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 2.png" alt="Daily Challenge" class="screenshot-img">
+          </div>
+          <div class="screenshot">
+            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 3.png" alt="Game Menu" class="screenshot-img">
           </div>
         </div>
       </div>
@@ -241,7 +224,7 @@ const features = [
     width: 120px;
     height: 120px;
     border-radius: 24px;
-    margin-bottom: 1.5rem;
+    margin: 0 auto 1.5rem;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   }
   
@@ -267,11 +250,49 @@ const features = [
     color: #666;
   }
   
+  .video-container {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    margin: 0 auto;
+  }
+  
+  .gameplay-video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+    
+    .video-container {
+      max-width: 300px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+    }
+  } 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .gameplay-video {
+    width: 100%;
+    display: block;
+  }
+  
   .store-buttons {
     display: flex;
     gap: 1rem;
     margin: 2rem 0;
     flex-wrap: wrap;
+    justify-content: center;
   }
   
   .store-button {
@@ -295,52 +316,6 @@ const features = [
   
   .store-badge.google-play {
     height: 60px;
-  }
-  
-  .devices-mockup {
-    position: relative;
-    height: 500px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .phone-mockup {
-    background: #333;
-    border-radius: 36px;
-    padding: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 6px solid #222;
-    position: absolute;
-    width: 220px;
-  }
-  
-  .phone-mockup.primary {
-    z-index: 3;
-    transform: translateY(0) scale(1);
-  }
-  
-  .phone-mockup.secondary {
-    z-index: 2;
-    transform: translateX(-140px) translateY(40px) scale(0.85) rotate(-10deg);
-  }
-  
-  .phone-mockup.tertiary {
-    z-index: 1;
-    transform: translateX(140px) translateY(40px) scale(0.85) rotate(10deg);
-  }
-  
-  .placeholder-screenshot {
-    background: #444;
-    aspect-ratio: 9/16;
-    border-radius: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #aaa;
-    text-align: center;
-    padding: 1rem;
   }
   
   /* Features Section */
@@ -408,26 +383,23 @@ const features = [
   
   .screenshot-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
   }
   
   .screenshot {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    aspect-ratio: 9/16;
   }
   
-  .screenshot.placeholder {
-    background: #eee;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #999;
-    text-align: center;
-    padding: 1rem;
+  .screenshot-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
   }
   
   /* Reviews Section */
@@ -529,6 +501,10 @@ const features = [
     
     .hero-content {
       grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .game-intro {
       text-align: center;
     }
     
@@ -553,26 +529,6 @@ const features = [
       margin-bottom: 2rem;
     }
     
-    .store-buttons {
-      justify-content: center;
-    }
-    
-    .devices-mockup {
-      height: 400px;
-    }
-    
-    .phone-mockup {
-      width: 180px;
-    }
-    
-    .phone-mockup.secondary {
-      transform: translateX(-100px) translateY(40px) scale(0.85) rotate(-10deg);
-    }
-    
-    .phone-mockup.tertiary {
-      transform: translateX(100px) translateY(40px) scale(0.85) rotate(10deg);
-    }
-    
     .feature-card {
       min-width: 100%;
       max-width: 100%;
@@ -595,22 +551,6 @@ const features = [
     .game-icon {
       width: 100px;
       height: 100px;
-    }
-    
-    .devices-mockup {
-      height: 350px;
-    }
-    
-    .phone-mockup {
-      width: 150px;
-    }
-    
-    .phone-mockup.secondary {
-      transform: translateX(-70px) translateY(30px) scale(0.8) rotate(-10deg);
-    }
-    
-    .phone-mockup.tertiary {
-      transform: translateX(70px) translateY(30px) scale(0.8) rotate(10deg);
     }
     
     .features-grid, .screenshot-gallery, .reviews-grid {
