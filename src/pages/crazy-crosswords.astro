@@ -37,41 +37,49 @@ const reviews = [
   {
     name: "Ujjwal Nagmani",
     rating: 5,
+    title: "Unique!",
     text: "A very unique twist on the word game genre. Thoroughly enjoyed playing it!"
   },
   {
     name: "Unknown",
     rating: 5,
+    title: "Attractive!",
     text: "Attractive UI 😘😘 challenging enough"
   },
   {
     name: "Ujjwal Nagmani",
     rating: 5,
+    title: "Fun",
     text: "Crazy Crosswords is a fun, addictive, and challenging word game that stands out due to its fresh approach to crossword puzzles. Its simplicity, coupled with clever twists, makes it a great choice for anyone who enjoys word-based challenges. If you're a fan of word games, it's worth checking out."
   },
   {
     name: "ScaryBunny1",
     rating: 5,
+    title: "Amazing game",
     text: "Amazing game with a creative concept! Excited to see more development into the game!"
   },
   {
     name: "EmptyFlute",
     rating: 5,
+    title: "Daily challenge are hard some times",
     text: "Game is overall good, but sometimes daily challenge is bit hard."
   },
   {
     name: "IronKnight11",
     rating: 5,
+    title: "Addictive Word Game, Daily Challenges are great",
     text: "Its a nice twist on word puzzles. Daily challenge is pretty great. Good work."
   },
   {
     name: "joeC1611",
     rating: 5,
+    title: "Great game keeps you on your toes",
     text: "Great game keeps you on your toes continuously learning"
   },
   {
     name: "turmeric soda",
     rating: 5,
+    title: "Interesting concept",
     text: "It's an interesting concept, really like the UI. Please add some power ups or maybe give better hints, sometimes we feel stuck on levels."
   }
 ];
@@ -187,6 +195,7 @@ const features = [
                 <div class="review-rating">
                   {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
                 </div>
+                <h4 class="review-title">{review.title}</h4>
                 <p class="review-text">{review.text}</p>
                 <p class="review-author">- {review.name}</p>
               </div>
@@ -197,6 +206,7 @@ const features = [
                 <div class="review-rating">
                   {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
                 </div>
+                <h4 class="review-title">{review.title}</h4>
                 <p class="review-text">{review.text}</p>
                 <p class="review-author">- {review.name}</p>
               </div>
@@ -481,7 +491,15 @@ const features = [
   .review-rating {
     color: #ffc107;
     font-size: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .review-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4a4a4a;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
   }
   
   .review-text {
