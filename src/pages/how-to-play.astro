@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
 
+// Import images
+import appStoreBadge from '../assets/images/badges/app-store-badge.svg';
+import googlePlayBadge from '../assets/images/badges/google-play-badge.png';
+import gameplayThumbnail from '../assets/images/crazy-crosswords/gameplay-thumbnail.png';
+
 const footerLinks = [
   { href: "/", text: "Home" },
   { href: "/crazy-crosswords", text: "Game Details" },
@@ -28,7 +33,7 @@ const footerLinks = [
         <div class="video-section">
           <h3>Watch Gameplay</h3>
           <div class="video-container">
-            <video controls poster="/images/crazy-crosswords/gameplay-thumbnail.png" class="gameplay-video" preload="none">
+            <video controls poster={gameplayThumbnail.src} class="gameplay-video" preload="none">
               <source data-src="/images/crazy-crosswords/gameplay-video.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
@@ -100,10 +105,10 @@ const footerLinks = [
       <div class="download-section">
         <div class="store-buttons">
           <a href="https://apps.apple.com/us/app/crazy-crosswords/id6720760088" class="store-button" target="_blank" rel="noopener">
-            <img src="/images/badges/app-store-badge.svg" alt="Download on the App Store" class="store-badge">
+            <Image src={appStoreBadge} alt="Download on the App Store" class="store-badge" width={120} height={40} />
           </a>
           <a href="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword" class="store-button" target="_blank" rel="noopener">
-            <img src="/images/badges/google-play-badge.png" alt="Get it on Google Play" class="store-badge google-play">
+            <Image src={googlePlayBadge} alt="Get it on Google Play" class="store-badge google-play" width={135} height={40} />
           </a>
         </div>
       </div>
