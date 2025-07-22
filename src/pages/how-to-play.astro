@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
 
 const footerLinks = [
   { href: "/", text: "Home" },
@@ -90,8 +91,8 @@ const footerLinks = [
       
       <div class="download-cta">
         <a href="https://crazycrosswords.app.link" class="download-link" target="_blank" rel="noopener">
-          <img src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords" class="app-icon">
-          <span>Download Crazy Crosswords</span>
+          <Image src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords" class="app-icon" width={40} height={40} />
+          <span>Download Now</span>
         </a>
       </div>
     </main>
@@ -229,25 +230,28 @@ const footerLinks = [
 .download-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
-  padding: 1rem 1.5rem;
-  background: #9bb3a3;
-  color: white;
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+  background: white;
+  color: #333;
   text-decoration: none;
-  border-radius: 24px;
+  border-radius: 20px;
   font-weight: 500;
   transition: all 0.3s ease;
+  border: 2px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .download-link:hover {
-  background: #8aa695;
+  border-color: #7c9885;
+  box-shadow: 0 4px 16px rgba(124, 152, 133, 0.15);
   transform: translateY(-1px);
 }
 
 .app-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
