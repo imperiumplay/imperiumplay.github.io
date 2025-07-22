@@ -13,122 +13,267 @@ const footerLinks = [
   title="How to Play - Crazy Crosswords"
   description="Learn how to play Crazy Crosswords - arrange letters to form words in rows and columns."
 >
-  <div class="container">
-    <h1>How to Play <span class="highlight">CrazyCrosswords</span></h1>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="guide-intro">
+          <img src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords Icon" class="game-icon">
+          <h1>How to Play <span class="highlight">Crazy</span>Crosswords</h1>
+          <p class="tagline">Master the Art of Word Arrangement</p>
+          <p class="description">
+            CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.
+          </p>
+        </div>
+      </div>
+    </section>
     
-    <div class="section">
-      <h2>Game Overview</h2>
-      <p>CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.</p>
-    </div>
-
-    <div class="section">
-      <h2>Basic Rules</h2>
-      <p>Follow these simple rules to master CrazyCrosswords:</p>
-      <ul>
-        <li>Rearrange tiles to form correct words in all rows and columns</li>
-        <li>Tap and drag any letter to swap it with any other letter on the board</li>
-        <li>Form words that match the hints:
-          <ul>
-            <li>Rows: Read left to right</li>
-            <li>Columns: Read top to bottom</li>
-          </ul>
-        </li>
-        <li><span class="color-indicator green"></span>Correct words turn green and update the hint icon</li>
-        <li>Complete the level by forming all correct words</li>
-      </ul>
-
-      <div class="gameplay-tip">
-        <strong>Pro Tip:</strong> With the ability to swap any letters, try focusing on completing one word at a time. Look for letters you need anywhere on the board!
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Controls</h2>
-      <p>Intuitive controls make CrazyCrosswords easy to play:</p>
-      <ul>
-        <li>Tap and hold any letter to select it</li>
-        <li>Drag the letter to any other position on the board to swap</li>
-        <li>Tap hint buttons on the sides to see target words</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Powerups</h2>
-      <p>When you need a little help, these powerups can save the day:</p>
-      <div class="powerup-section">
-        <h3>Reveal Word</h3>
-        <p>This powerup reveals the correct arrangement of letters for the currently selected hint (row or column). Use it when you're stuck on a particularly tricky word!</p>
+    <!-- Game Rules Section -->
+    <section class="rules">
+      <div class="container">
+        <h2>Basic Rules</h2>
+        <div class="rules-grid">
+          <div class="rule-card">
+            <div class="rule-icon">🎯</div>
+            <h3>Rearrange & Form</h3>
+            <p>Rearrange tiles to form correct words in all rows and columns</p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">👆</div>
+            <h3>Tap & Drag</h3>
+            <p>Tap and drag any letter to swap it with any other letter on the board</p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">📖</div>
+            <h3>Follow Clue</h3>
+            <p>Form words that match the clue - Rows: left to right, Columns: top to bottom</p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">✅</div>
+            <h3>Track Progress</h3>
+            <p><span class="color-indicator green"></span>Correct words turn green and update the clue icon</p>
+          </div>
+        </div>
         
-        <h3>Shuffle Hint</h3>
-        <p>This powerup rearranges the letters in the currently selected row or column, giving you a fresh perspective that might help you spot the solution.</p>
-        
-        <h3>Using Powerups</h3>
-        <p>Powerups require coins to use. Select a hint first (row or column), then tap the powerup you want to use. The powerup will affect only the currently selected hint.</p>
+        <div class="gameplay-tip">
+          <strong>Pro Tip:</strong> With the ability to swap any letters, try focusing on completing one word at a time. Look for letters you need anywhere on the board!
+        </div>
       </div>
-    </div>
-
-    <Footer links={footerLinks} />
-  </div>
+    </section>
+    
+    <!-- Controls Section -->
+    <section class="controls">
+      <div class="container">
+        <h2>Intuitive Controls</h2>
+        <div class="controls-grid">
+          <div class="control-card">
+            <div class="control-icon">📱</div>
+            <h3>Select Letters</h3>
+            <p>Tap and hold any letter to select it</p>
+          </div>
+          <div class="control-card">
+            <div class="control-icon">🔄</div>
+            <h3>Swap Positions</h3>
+            <p>Drag the letter to any other position on the board to swap</p>
+          </div>
+          <div class="control-card">
+            <div class="control-icon">💡</div>
+            <h3>View Clues</h3>
+            <p>Tap clue buttons on the sides to see target words</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Powerups Section -->
+    <section class="powerups">
+      <div class="container">
+        <h2>Helpful Powerups</h2>
+        <p class="section-description">When you need a little help, these powerups can save the day:</p>
+        
+        <div class="powerups-grid">
+          <div class="powerup-card">
+            <div class="powerup-icon">🔍</div>
+            <h3>Reveal Word</h3>
+            <p>This powerup reveals the correct arrangement of letters for the currently selected clue (row or column). Use it when you're stuck on a particularly tricky word!</p>
+          </div>
+          
+          <div class="powerup-card">
+            <div class="powerup-icon">🔀</div>
+            <h3>Shuffle Hint</h3>
+            <p>This powerup rearranges the letters in the currently selected row or column, giving you a fresh perspective that might help you spot the solution.</p>
+          </div>
+          
+          <div class="powerup-card">
+            <div class="powerup-icon">🪙</div>
+            <h3>Using Powerups</h3>
+            <p>Powerups require coins to use. Select a clue first (row or column), then tap the powerup you want to use. The powerup will affect only the currently selected clue.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer links={footerLinks} />
 </BaseLayout>
 
 <style>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin: 0 0 2rem 0;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(124, 152, 133, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%);
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.guide-intro {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.game-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  margin-bottom: 2rem;
+}
+
+.guide-intro h1 {
+  font-size: 3.5rem;
+  margin: 0 0 1rem 0;
   letter-spacing: 2px;
   font-weight: 300;
-  text-align: center;
   animation: fadeIn 2s ease-in;
 }
 
-h2 {
-  color: #7c9885;
-  font-weight: 400;
-  margin-top: 2rem;
-  font-size: 1.5rem;
+.tagline {
+  font-size: 1.4rem;
+  margin: 0 0 2rem 0;
+  opacity: 0.7;
+  font-weight: 300;
 }
 
-h3 {
-  color: #7c9885;
-  font-weight: 400;
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
-}
-
-p {
+.description {
+  font-size: 1.1rem;
   line-height: 1.6;
-  margin: 1rem 0;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-ul {
-  padding-left: 2rem;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-li {
-  margin: 0.5rem 0;
+.rules, .controls, .powerups {
+  padding: 5rem 0;
+}
+
+.rules {
+  background: rgba(255,255,255,0.5);
+}
+
+.powerups {
+  background: rgba(248,249,250,0.8);
+}
+
+.rules h2, .controls h2, .powerups h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  color: #4a4a4a;
+  text-align: center;
+}
+
+.section-description {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rules-grid, .controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.powerups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.rule-card, .control-card, .powerup-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.rule-card:hover, .control-card:hover, .powerup-card:hover {
+  transform: translateY(-5px);
+}
+
+.rule-icon, .control-icon, .powerup-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.rule-card h3, .control-card h3, .powerup-card h3 {
+  color: #7c9885;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.rule-card p, .control-card p, .powerup-card p {
+  color: #666;
   line-height: 1.6;
-}
-
-.section {
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1.5s ease-in;
+  margin: 0;
 }
 
 .gameplay-tip {
-  background: #f8f9fa;
-  border-left: 4px solid #7c9885;
-  padding: 1rem;
-  margin: 1rem 0;
+  background: rgba(124, 152, 133, 0.1);
+  border: 1px solid rgba(124, 152, 133, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.gameplay-tip strong {
+  color: #7c9885;
 }
 
 .color-indicator {
@@ -137,16 +282,89 @@ li {
   height: 12px;
   border-radius: 50%;
   margin-right: 8px;
+  vertical-align: middle;
 }
 
 .green {
   background-color: #4CAF50;
 }
 
-.powerup-section {
-  background: #f4f9f6;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem 0;
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1rem;
+    min-height: 50vh;
+  }
+  
+  .game-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .guide-intro h1 {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+  
+  .rules, .controls, .powerups {
+    padding: 3rem 0;
+  }
+  
+  .rules h2, .controls h2, .powerups h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .rules-grid, .controls-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .powerups-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .rule-card, .control-card, .powerup-card {
+    padding: 1.5rem;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1.5rem 0.5rem;
+  }
+  
+  .guide-intro h1 {
+    font-size: 2rem;
+  }
+  
+  .tagline {
+    font-size: 1.1rem;
+  }
+  
+  .rules, .controls, .powerups {
+    padding: 2rem 0;
+  }
+  
+  .rule-card, .control-card, .powerup-card {
+    padding: 1.2rem;
+  }
+  
+  .container {
+    padding: 0 0.5rem;
+  }
 }
 </style>
