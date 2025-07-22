@@ -13,267 +13,178 @@ const footerLinks = [
   title="How to Play - Crazy Crosswords"
   description="Learn how to play Crazy Crosswords - arrange letters to form words in rows and columns."
 >
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <div class="guide-intro">
-          <img src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords Icon" class="game-icon">
-          <h1>How to Play <span class="highlight">Crazy</span>Crosswords</h1>
-          <p class="tagline">Master the Art of Word Arrangement</p>
-          <p class="description">
-            CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.
-          </p>
-        </div>
-      </div>
-    </section>
+  <div class="guide-container">
+    <header class="guide-header">
+      <h1>How to Play <span class="highlight">Crazy</span>Crosswords</h1>
+    </header>
     
-    <!-- Game Rules Section -->
-    <section class="rules">
-      <div class="container">
-        <h2>Basic Rules</h2>
-        <div class="rules-grid">
-          <div class="rule-card">
-            <div class="rule-icon">🎯</div>
-            <h3>Rearrange & Form</h3>
-            <p>Rearrange tiles to form correct words in all rows and columns</p>
-          </div>
-          <div class="rule-card">
-            <div class="rule-icon">👆</div>
-            <h3>Tap & Drag</h3>
-            <p>Tap and drag any letter to swap it with any other letter on the board</p>
-          </div>
-          <div class="rule-card">
-            <div class="rule-icon">📖</div>
-            <h3>Follow Clue</h3>
-            <p>Form words that match the clue - Rows: left to right, Columns: top to bottom</p>
-          </div>
-          <div class="rule-card">
-            <div class="rule-icon">✅</div>
-            <h3>Track Progress</h3>
-            <p><span class="color-indicator green"></span>Correct words turn green and update the clue icon</p>
+    <main class="guide-content">
+      <section class="overview">
+        <h2>Game Overview</h2>
+        <p>CrazyCrosswords is a unique word puzzle game where you rearrange letters to form words both horizontally and vertically. Each puzzle presents you with a grid of letters that you need to reorganize to create valid words in both directions.</p>
+        
+        <div class="video-section">
+          <h3>Watch Gameplay</h3>
+          <div class="video-container">
+            <video controls poster="/images/crazy-crosswords/gameplay-thumbnail.png" class="gameplay-video">
+              <source src="/images/crazy-crosswords/gameplay-video.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
         
-        <div class="gameplay-tip">
+
+      </section>
+
+      <section class="rules">
+        <h2>Basic Rules</h2>
+        <ol>
+          <li>Rearrange tiles to form correct words in all rows and columns</li>
+          <li>Tap and drag any letter to swap it with any other letter on the board</li>
+          <li>Form words that match the clues:
+            <ul>
+              <li>Rows: Read left to right</li>
+              <li>Columns: Read top to bottom</li>
+            </ul>
+          </li>
+          <li><span class="color-indicator green"></span>Correct words turn green and update the clue icon</li>
+          <li>Complete the level by forming all correct words</li>
+        </ol>
+        
+        <div class="tip">
           <strong>Pro Tip:</strong> With the ability to swap any letters, try focusing on completing one word at a time. Look for letters you need anywhere on the board!
         </div>
-      </div>
-    </section>
-    
-    <!-- Controls Section -->
-    <section class="controls">
-      <div class="container">
-        <h2>Intuitive Controls</h2>
-        <div class="controls-grid">
-          <div class="control-card">
-            <div class="control-icon">📱</div>
-            <h3>Select Letters</h3>
-            <p>Tap and hold any letter to select it</p>
-          </div>
-          <div class="control-card">
-            <div class="control-icon">🔄</div>
-            <h3>Swap Positions</h3>
-            <p>Drag the letter to any other position on the board to swap</p>
-          </div>
-          <div class="control-card">
-            <div class="control-icon">💡</div>
-            <h3>View Clues</h3>
-            <p>Tap clue buttons on the sides to see target words</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Powerups Section -->
-    <section class="powerups">
-      <div class="container">
-        <h2>Helpful Powerups</h2>
-        <p class="section-description">When you need a little help, these powerups can save the day:</p>
+      </section>
+      
+      <section class="controls">
+        <h2>Controls</h2>
+        <p>Intuitive controls make CrazyCrosswords easy to play:</p>
+        <ul>
+          <li>Tap and hold any letter to select it</li>
+          <li>Drag the letter to any other position on the board to swap</li>
+          <li>Tap clue buttons on the sides to see target words</li>
+        </ul>
+      </section>
+      
+      <section class="powerups">
+        <h2>Powerups</h2>
+        <p>When you need a little help, these powerups can save the day:</p>
         
-        <div class="powerups-grid">
-          <div class="powerup-card">
-            <div class="powerup-icon">🔍</div>
+        <div class="powerup-list">
+          <div class="powerup">
             <h3>Reveal Word</h3>
             <p>This powerup reveals the correct arrangement of letters for the currently selected clue (row or column). Use it when you're stuck on a particularly tricky word!</p>
           </div>
           
-          <div class="powerup-card">
-            <div class="powerup-icon">🔀</div>
+          <div class="powerup">
             <h3>Shuffle Hint</h3>
             <p>This powerup rearranges the letters in the currently selected row or column, giving you a fresh perspective that might help you spot the solution.</p>
           </div>
           
-          <div class="powerup-card">
-            <div class="powerup-icon">🪙</div>
+          <div class="powerup">
             <h3>Using Powerups</h3>
             <p>Powerups require coins to use. Select a clue first (row or column), then tap the powerup you want to use. The powerup will affect only the currently selected clue.</p>
           </div>
         </div>
+      </section>
+      
+      <div class="download-cta">
+        <a href="https://crazycrosswords.app.link" class="download-link" target="_blank" rel="noopener">
+          <img src="/images/Icon_crazycrosswords.jpg" alt="Crazy Crosswords" class="app-icon">
+          <span>Download Crazy Crosswords</span>
+        </a>
       </div>
-    </section>
-  </main>
+    </main>
+  </div>
   
   <Footer links={footerLinks} />
 </BaseLayout>
 
 <style>
-.hero {
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  padding: 4rem 2rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(124, 152, 133, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%);
-  z-index: -1;
-}
-
-.hero-content {
-  max-width: 1200px;
+.guide-container {
+  max-width: 900px;
   margin: 0 auto;
-  text-align: center;
-}
-
-.guide-intro {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.game-icon {
-  width: 100px;
-  height: 100px;
-  border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-  margin-bottom: 2rem;
-}
-
-.guide-intro h1 {
-  font-size: 3.5rem;
-  margin: 0 0 1rem 0;
-  letter-spacing: 2px;
-  font-weight: 300;
-  animation: fadeIn 2s ease-in;
-}
-
-.tagline {
-  font-size: 1.4rem;
-  margin: 0 0 2rem 0;
-  opacity: 0.7;
-  font-weight: 300;
-}
-
-.description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #666;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.rules, .controls, .powerups {
-  padding: 5rem 0;
-}
-
-.rules {
-  background: rgba(255,255,255,0.5);
-}
-
-.powerups {
-  background: rgba(248,249,250,0.8);
-}
-
-.rules h2, .controls h2, .powerups h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  font-weight: 300;
-  color: #4a4a4a;
-  text-align: center;
-}
-
-.section-description {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.rules-grid, .controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.powerups-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-}
-
-.rule-card, .control-card, .powerup-card {
-  background: white;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease;
-  text-align: center;
-}
-
-.rule-card:hover, .control-card:hover, .powerup-card:hover {
-  transform: translateY(-5px);
-}
-
-.rule-icon, .control-icon, .powerup-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  display: block;
-}
-
-.rule-card h3, .control-card h3, .powerup-card h3 {
-  color: #7c9885;
-  margin-bottom: 1rem;
-  font-weight: 400;
-  font-size: 1.3rem;
-}
-
-.rule-card p, .control-card p, .powerup-card p {
-  color: #666;
   line-height: 1.6;
-  margin: 0;
 }
 
-.gameplay-tip {
-  background: rgba(124, 152, 133, 0.1);
-  border: 1px solid rgba(124, 152, 133, 0.2);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem auto;
-  max-width: 600px;
+.guide-header {
   text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
 }
 
-.gameplay-tip strong {
+.guide-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 300;
+  color: #333;
+}
+
+.guide-content section {
+  margin-bottom: 3rem;
+}
+
+.guide-content h2 {
   color: #7c9885;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.guide-content h3 {
+  color: #7c9885;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.guide-content p {
+  margin: 1rem 0;
+  color: #555;
+}
+
+.guide-content ol {
+  padding-left: 1.5rem;
+}
+
+.guide-content ul {
+  padding-left: 1.5rem;
+}
+
+.guide-content li {
+  margin: 0.5rem 0;
+}
+
+.tip {
+  background: #f8f9fa;
+  border-left: 4px solid #7c9885;
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.tip strong {
+  color: #7c9885;
+}
+
+.powerup-list {
+  margin-top: 1.5rem;
+}
+
+.powerup {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.powerup h3 {
+  margin-top: 0;
 }
 
 .color-indicator {
@@ -289,82 +200,104 @@ const footerLinks = [
   background-color: #4CAF50;
 }
 
+.video-section {
+  margin: 2rem 0;
+}
+
+.video-container {
+  max-width: 300px;
+  margin: 1rem auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  aspect-ratio: 9/16;
+}
+
+.gameplay-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.download-cta {
+  text-align: center;
+  margin: 3rem 0 2rem 0;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.5rem;
+  background: #9bb3a3;
+  color: white;
+  text-decoration: none;
+  border-radius: 24px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.download-link:hover {
+  background: #8aa695;
+  transform: translateY(-1px);
+}
+
+.app-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
-  .hero {
-    padding: 2rem 1rem;
-    min-height: 50vh;
+  .guide-container {
+    padding: 1rem;
   }
   
-  .game-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1.5rem;
+  .guide-header h1 {
+    font-size: 2rem;
   }
   
-  .guide-intro h1 {
-    font-size: 2.5rem;
-    letter-spacing: 1px;
+  .guide-content h2 {
+    font-size: 1.5rem;
   }
   
-  .tagline {
+  .guide-content h3 {
     font-size: 1.2rem;
   }
   
-  .description {
-    font-size: 1rem;
+  .video-container {
+    max-width: 250px;
   }
   
-  .rules, .controls, .powerups {
-    padding: 3rem 0;
-  }
-  
-  .rules h2, .controls h2, .powerups h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .rules-grid, .controls-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .powerups-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .rule-card, .control-card, .powerup-card {
-    padding: 1.5rem;
-  }
-  
-  .container {
-    padding: 0 1rem;
+  .download-link {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: 1.5rem 0.5rem;
+  .guide-container {
+    padding: 0.5rem;
   }
   
-  .guide-intro h1 {
-    font-size: 2rem;
+  .guide-header {
+    margin-bottom: 2rem;
   }
   
-  .tagline {
-    font-size: 1.1rem;
+  .guide-header h1 {
+    font-size: 1.8rem;
   }
   
-  .rules, .controls, .powerups {
-    padding: 2rem 0;
+  .guide-content section {
+    margin-bottom: 2rem;
   }
   
-  .rule-card, .control-card, .powerup-card {
-    padding: 1.2rem;
-  }
-  
-  .container {
-    padding: 0 0.5rem;
+  .video-container {
+    max-width: 200px;
   }
 }
 </style>
