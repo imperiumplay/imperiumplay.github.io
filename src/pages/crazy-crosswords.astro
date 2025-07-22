@@ -139,10 +139,17 @@ const features = [
         
         <div class="game-video">
           <div class="video-container">
-            <video controls poster="/images/crazy-crosswords/gameplay-thumbnail.png" class="gameplay-video">
-              <source src="/images/crazy-crosswords/gameplay-video.mp4" type="video/mp4">
+            <video controls poster="/images/crazy-crosswords/gameplay-thumbnail.png" class="gameplay-video" preload="none">
+              <source data-src="/images/crazy-crosswords/gameplay-video.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
+            <div class="play-overlay">
+              <button class="play-button" aria-label="Play video">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#ffffff">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -305,12 +312,51 @@ const features = [
     overflow: hidden;
     box-shadow: 0 12px 32px rgba(0,0,0,0.2);
     margin: 0 auto;
+    position: relative;
+    cursor: pointer;
   }
   
   .gameplay-video {
     width: 100%;
     height: auto;
     display: block;
+  }
+  
+  .play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .play-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .play-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .play-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
   }
   
   @media (max-width: 768px) {
@@ -641,6 +687,7 @@ const features = [
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Reviews carousel functionality
     const track = document.getElementById('reviewsTrack');
     const reviews = document.querySelectorAll('.review-card:not(.duplicate)');
     const totalReviews = reviews.length;
@@ -689,5 +736,56 @@ const features = [
     
     // Initial setup
     updateCarousel();
+    
+    // Video lazy loading functionality
+    const videoContainer = document.querySelector('.video-container');
+    const video = document.querySelector('.gameplay-video');
+    const playOverlay = document.querySelector('.play-overlay');
+    const videoSource = video.querySelector('source');
+    
+    if (videoContainer && video && playOverlay && videoSource) {
+      // Function to load and play the video
+      function loadAndPlayVideo() {
+        // Set the actual source from data-src
+        const actualSrc = videoSource.getAttribute('data-src');
+        videoSource.setAttribute('src', actualSrc);
+        
+        // Load the video
+        video.load();
+        
+        // Play the video
+        video.play()
+          .then(() => {
+            // Hide the overlay when video starts playing
+            playOverlay.style.display = 'none';
+          })
+          .catch(error => {
+            console.error('Error playing video:', error);
+            // Keep overlay visible if autoplay fails (common on mobile)
+          });
+      }
+      
+      // Add click event to the container
+      videoContainer.addEventListener('click', (e) => {
+        loadAndPlayVideo();
+      });
+      
+      // Add intersection observer for auto-loading when scrolled into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // If video is in viewport and src hasn't been set yet
+          if (entry.isIntersecting && !videoSource.hasAttribute('src')) {
+            // Just set the source but don't autoplay
+            const actualSrc = videoSource.getAttribute('data-src');
+            videoSource.setAttribute('src', actualSrc);
+            video.load();
+            // Don't remove the overlay or autoplay
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      // Start observing the video element
+      observer.observe(videoContainer);
+    }
   });
 </script>
