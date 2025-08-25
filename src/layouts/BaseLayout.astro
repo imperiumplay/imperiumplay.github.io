@@ -6,10 +6,11 @@ export interface Props {
   description: string;
   keywords?: string;
   ogUrl?: string;
+  canonicalUrl?: string;
   structuredData?: any[];
 }
 
-const { title, description, keywords, ogUrl, structuredData } = Astro.props;
+const { title, description, keywords, ogUrl, canonicalUrl, structuredData } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -30,6 +31,7 @@ const { title, description, keywords, ogUrl, structuredData } = Astro.props;
   
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
+  {canonicalUrl && <link rel="canonical" href={canonicalUrl}>}
   
   {structuredData && structuredData.map(data => (
     <script type="application/ld+json" set:html={JSON.stringify(data)} />
