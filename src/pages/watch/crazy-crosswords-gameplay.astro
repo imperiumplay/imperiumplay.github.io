@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+
+const videoStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Crazy Crosswords - Gameplay Tutorial",
+    "description": "Watch how to play Crazy Crosswords - arrange letters to create valid words in rows and columns. Learn the strategic gameplay mechanics.",
+    "thumbnailUrl": "https://imperiumplay.com/images/Icon_crazycrosswords.jpg",
+    "uploadDate": "2024-01-01T00:00:00Z",
+    "duration": "PT2M30S",
+    "contentUrl": "https://imperiumplay.com/images/crazy-crosswords/gameplay-video.mp4",
+    "embedUrl": "https://imperiumplay.com/watch/crazy-crosswords-gameplay",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ImperiumPlay",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://imperiumplay.com/images/Icon_crazycrosswords.jpg"
+      }
+    }
+  }
+];
+
+const footerLinks = [
+  { href: "/crazy-crosswords", text: "Game Details" },
+  { href: "/how-to-play", text: "How to Play" },
+  { href: "/blog", text: "Blog" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="Crazy Crosswords Gameplay - How to Play Tutorial"
+  description="Watch how to play Crazy Crosswords - arrange letters to create valid words in rows and columns. Learn the strategic gameplay mechanics."
+  keywords="crazy crosswords gameplay, how to play, word puzzle tutorial, crossword game"
+  ogUrl="https://imperiumplay.com/watch/crazy-crosswords-gameplay"
+  canonicalUrl="https://imperiumplay.com/watch/crazy-crosswords-gameplay"
+  structuredData={videoStructuredData}
+>
+  <main class="watch-page">
+    <div class="video-container">
+      <h1>Crazy Crosswords - Gameplay Tutorial</h1>
+      <video controls poster="/images/Icon_crazycrosswords.jpg" class="gameplay-video">
+        <source src="/images/crazy-crosswords/gameplay-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      
+      <div class="video-info">
+        <h2>Learn How to Play</h2>
+        <p>Master the art of word arrangement in Crazy Crosswords. This tutorial shows you how to strategically place letters to create valid words in both rows and columns.</p>
+        
+        <div class="download-section">
+          <h3>Download the Game</h3>
+          <div class="store-buttons">
+            <a href="https://apps.apple.com/us/app/crazy-crosswords/id6720760088" class="store-button" target="_blank" rel="noopener">
+              <img src="/images/badges/app-store-badge.svg" alt="Download on the App Store" class="store-badge">
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword" class="store-button" target="_blank" rel="noopener">
+              <img src="/images/badges/google-play-badge.png" alt="Get it on Google Play" class="store-badge google-play">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+.watch-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.video-container h1 {
+  text-align: center;
+  color: #7c9885;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.gameplay-video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.video-info {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.video-info h2 {
+  color: #7c9885;
+  margin-bottom: 1rem;
+}
+
+.video-info p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.download-section h3 {
+  color: #7c9885;
+  margin-bottom: 1rem;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.store-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.store-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.store-badge {
+  height: 40px;
+  width: auto;
+}
+
+.store-badge.google-play {
+  height: 60px;
+}
+
+@media (max-width: 768px) {
+  .watch-page {
+    padding: 1rem 0.5rem;
+  }
+  
+  .video-info {
+    padding: 1.5rem;
+  }
+  
+  .store-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+}
+</style>
