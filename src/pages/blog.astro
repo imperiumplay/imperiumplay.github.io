@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const blogPosts = [
+  {
+    title: "The Psychology Behind Word Puzzle Games",
+    excerpt: "Discover why word puzzles are so addictive and how they benefit your brain health.",
+    date: "2024-01-15",
+    slug: "psychology-word-puzzles",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop"
+  },
+  {
+    title: "5 Tips to Master Crazy Crosswords",
+    excerpt: "Level up your gameplay with these expert strategies for creating perfect crosswords.",
+    date: "2024-01-10", 
+    slug: "master-crazy-crosswords",
+    readTime: "3 min read",
+    image: "/images/Icon_crazycrosswords.jpg"
+  }
+];
+
+const footerLinks = [
+  { href: "/crazy-crosswords", text: "Game Details" },
+  { href: "/how-to-play", text: "How to Play" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="Blog - ImperiumPlay"
+  description="Read the latest insights about mobile gaming, word puzzles, and game development from ImperiumPlay."
+  keywords="mobile gaming blog, word puzzle tips, game development"
+  ogUrl="https://imperiumplay.com/blog"
+>
+  <main>
+    <section class="blog-hero">
+      <div class="container">
+        <h1>Game Development <span class="highlight">Insights</span></h1>
+        <p>Tips, strategies, and behind-the-scenes stories from ImperiumPlay</p>
+      </div>
+    </section>
+    
+    <section class="blog-posts">
+      <div class="container">
+        {blogPosts.map(post => (
+          <article class="blog-card" onclick={`window.location.href='/blog/${post.slug}'`} style="cursor: pointer;">
+            <img src={post.image} alt={post.title} class="blog-image">
+            <div class="blog-content">
+              <div class="blog-meta">
+                <time>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                <span class="read-time">{post.readTime}</span>
+              </div>
+              <h2>{post.title}</h2>
+              <p>{post.excerpt}</p>
+              <span class="read-more">Read More →</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+  
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+.blog-hero {
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(124, 152, 133, 0.1) 0%, rgba(240, 230, 239, 0.1) 100%);
+}
+
+.blog-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.blog-hero p {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.blog-posts {
+  padding: 4rem 2rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.blog-card:hover {
+  transform: translateY(-2px);
+}
+
+.blog-image {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+.blog-content {
+  padding: 2rem;
+  flex: 1;
+}
+
+.blog-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.blog-card h2 {
+  margin-bottom: 1rem;
+  font-weight: 400;
+  color: #333;
+}
+
+.blog-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.read-more {
+  color: #7c9885;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.read-more:hover {
+  color: #648670;
+}
+
+@media (max-width: 768px) {
+  .blog-hero {
+    padding: 4rem 1rem 2rem;
+  }
+  
+  .blog-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .blog-posts {
+    padding: 2rem 1rem;
+  }
+  
+  .blog-card {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .blog-image {
+    width: 100%;
+    height: 200px;
+  }
+  
+  .blog-content {
+    padding: 1.5rem;
+  }
+}
+</style>

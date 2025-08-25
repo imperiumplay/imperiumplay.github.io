@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+
+const footerLinks = [
+  { href: "/crazy-crosswords", text: "Game Details" },
+  { href: "/how-to-play", text: "How to Play" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="5 Tips to Master Crazy Crosswords - ImperiumPlay Blog"
+  description="Level up your gameplay with these expert strategies for creating perfect crosswords."
+  keywords="crazy crosswords, word puzzle tips, crossword strategy, mobile game tips"
+  ogUrl="https://imperiumplay.com/blog/master-crazy-crosswords"
+>
+  <main>
+    <article class="blog-post">
+      <div class="container">
+        <header class="post-header">
+          <nav class="breadcrumb">
+            <a href="/">Home</a> → <a href="/blog">Blog</a> → Master Crazy Crosswords
+          </nav>
+          <h1>5 Tips to Master Crazy Crosswords</h1>
+          <div class="post-meta">
+            <time>January 10, 2024</time>
+            <span>3 min read</span>
+          </div>
+        </header>
+        
+        <img src="/images/Icon_crazycrosswords.jpg" alt="5 Tips to Master Crazy Crosswords" class="post-hero-image">
+        
+        <div class="post-content">
+          <p>Ready to become a Crazy Crosswords champion? These expert strategies will help you create perfect crosswords and achieve higher scores consistently.</p>
+          
+          <h2>1. Start with Smaller Words</h2>
+          <p>Begin each puzzle by placing your smaller words first. 2-3 letter words are easier to identify and place, giving you a solid foundation to build upon. With the compact 4x5 grid, starting small helps you establish a base before tackling longer combinations.</p>
+          
+          <h2>2. Think in Intersections</h2>
+          <p>The key to high scores is maximizing intersections. When placing a word, always consider how it can cross with existing words. Each intersection point doubles your scoring potential for those letters.</p>
+          
+          <h2>3. Use Common Letter Patterns</h2>
+          <p>Familiarize yourself with common English letter patterns:</p>
+          <ul>
+            <li><strong>-ING endings</strong> - Perfect for creating multiple intersections</li>
+            <li><strong>-ED endings</strong> - Great for past tense words</li>
+            <li><strong>-ER endings</strong> - Useful for comparative words</li>
+            <li><strong>Vowel-consonant patterns</strong> - Help identify word possibilities quickly</li>
+          </ul>
+          
+          <h2>4. Embrace Strategic Randomness</h2>
+          <p>If you're stuck and can't find obvious word combinations, try placing letters randomly on the 4x5 grid. Sometimes random placement reveals unexpected word patterns and intersections you wouldn't have considered otherwise.</p>
+          
+          <h2>5. Save Difficult Letters for Last</h2>
+          <p>Letters like Q, X, Z, and J can be challenging to use. Save these for the end when you have more context and intersection opportunities. Often, these high-value letters can be placed in short words that intersect with longer ones.</p>
+          
+          <div class="tip-box">
+            <h3>💡 Pro Tip</h3>
+            <p>Practice makes perfect! The more you play, the better you'll become at recognizing word patterns and optimal placement strategies.</p>
+          </div>
+          
+          <div class="cta-section">
+            <h3>Ready to Put These Tips to Practice?</h3>
+            <p>Download Crazy Crosswords now and start implementing these strategies to boost your scores!</p>
+            <a href="https://crazycrosswords.app.link" class="cta-button" target="_blank" rel="noopener">Play Crazy Crosswords</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+  
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+.blog-post {
+  padding: 2rem 1rem 4rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.post-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.breadcrumb {
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #7c9885;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.post-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-hero-image {
+  width: 100%;
+  max-width: 600px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 0 auto 2rem;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.post-content {
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: #7c9885;
+  margin: 2.5rem 0 1rem;
+  font-weight: 400;
+}
+
+.post-content p {
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+.post-content ul {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.tip-box {
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.tip-box h3 {
+  color: #e67e22;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.tip-box p {
+  margin: 0;
+  font-style: italic;
+}
+
+.cta-section {
+  background: rgba(124, 152, 133, 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.cta-section h3 {
+  color: #7c9885;
+  margin-bottom: 1rem;
+}
+
+.cta-button {
+  display: inline-block;
+  background: #7c9885;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 24px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.cta-button:hover {
+  background: #648670;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .post-header h1 {
+    font-size: 2rem;
+  }
+  
+  .post-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .post-content {
+    font-size: 1rem;
+  }
+  
+  .cta-section {
+    padding: 1.5rem;
+  }
+  
+  .tip-box {
+    padding: 1rem;
+  }
+}
+</style>
