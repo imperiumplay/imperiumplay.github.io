@@ -30,6 +30,13 @@ const footerLinks = [
 >
   <main>
     <section class="hero">
+      <div class="floating-elements">
+        <div class="game-element element-1">🎮</div>
+        <div class="game-element element-2">🎯</div>
+        <div class="game-element element-3">⭐</div>
+        <div class="game-element element-4">🎲</div>
+        <div class="game-element element-5">🏆</div>
+      </div>
       <div class="hero-content">
         <div class="brand">
           <h1><span class="highlight">Imperium</span>Play</h1>
@@ -39,6 +46,7 @@ const footerLinks = [
       </div>
     </section>
     
+
 
   </main>
   
@@ -55,6 +63,13 @@ const footerLinks = [
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+    padding: 1rem 0.5rem;
+  }
+}
+
 .hero::before {
   content: '';
   position: absolute;
@@ -63,8 +78,98 @@ const footerLinks = [
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 30% 20%, rgba(124, 152, 133, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%);
+              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%),
+              linear-gradient(45deg, rgba(124, 152, 133, 0.05) 0%, transparent 100%);
   z-index: -1;
+}
+
+.floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.game-element {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.3;
+  animation: float 6s ease-in-out infinite;
+}
+
+.element-1 {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.element-2 {
+  top: 60%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.element-3 {
+  top: 30%;
+  right: 25%;
+  animation-delay: 2s;
+}
+
+.element-4 {
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 3s;
+}
+
+.element-5 {
+  top: 70%;
+  left: 70%;
+  animation-delay: 4s;
+}
+
+@media (max-width: 768px) {
+  .element-1 {
+    top: 15%;
+    left: 5%;
+  }
+  
+  .element-2 {
+    top: 75%;
+    right: 5%;
+  }
+  
+  .element-3 {
+    top: 25%;
+    right: 10%;
+  }
+  
+  .element-4 {
+    bottom: 20%;
+    left: 10%;
+  }
+  
+  .element-5 {
+    top: 85%;
+    left: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-elements {
+    display: none;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
 }
 
 .hero-content {
@@ -74,6 +179,8 @@ const footerLinks = [
   justify-content: center;
   align-items: center;
   text-align: center;
+  z-index: 2;
+  position: relative;
 }
 
 .brand {
@@ -87,6 +194,17 @@ const footerLinks = [
   font-weight: 200;
   line-height: 0.9;
   animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tagline {
@@ -103,69 +221,64 @@ const footerLinks = [
   font-weight: 400;
   font-style: italic;
   opacity: 0.9;
+  animation: pulse 3s ease-in-out infinite;
 }
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+
 
 
 
 
 
 @media (max-width: 768px) {
-  .hero {
-    padding: 1rem;
-    min-height: auto;
-  }
-  
-  .hero-content {
-    text-align: center;
-  }
-  
   .brand h1 {
-    font-size: 2.8rem;
-    letter-spacing: 1px;
+    font-size: 3.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
   }
   
   .tagline {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
   }
   
   .brewing-message {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   
-
+  .game-element {
+    font-size: 1.5rem;
+    opacity: 0.2;
+  }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
   }
   
   .brand h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
   }
   
-  .featured-game {
-    padding: 1rem;
-    margin: 0;
+  .tagline {
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
   
-  .game-info h2 {
-    font-size: 1.4rem;
+  .brewing-message {
+    font-size: 1.2rem;
   }
-  
-  .stat {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
-  }
-  
-  .store-badge {
-    height: 40px;
-  }
-  
-  .store-badge.google-play {
-    height: 40px;
-  }
-  
-
 }
 </style>
