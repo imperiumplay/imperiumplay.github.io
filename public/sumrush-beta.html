@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Match</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffd6e8 0%, #c1e7ff 100%);
+            color: #4a4a4a;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #trays {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #a8dadc;
+            backdrop-filter: blur(10px);
+        }
+
+        .tray {
+            background: linear-gradient(135deg, #f1faee 0%, #e8f4f8 100%);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 90px;
+            box-shadow: 0 4px 15px rgba(168, 218, 220, 0.3);
+            border: 2px solid #a8dadc;
+        }
+
+        .tray-target {
+            font-size: 36px;
+            font-weight: bold;
+            color: #457b9d;
+            text-shadow: 0 2px 4px rgba(69, 123, 157, 0.2);
+        }
+
+        .tray-progress {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tray-slot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #f1faee;
+            border: 2px solid #a8dadc;
+        }
+
+        .tray-slot.filled {
+            background: #a8dadc;
+            box-shadow: 0 0 8px rgba(168, 218, 220, 0.6);
+        }
+
+        #score {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.8);
+            color: #457b9d;
+            padding: 8px 15px;
+            border-radius: 8px;
+            z-index: 10;
+            border: 2px solid #a8dadc;
+        }
+
+        #timer {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        #grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 8px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .cell {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 3px solid transparent;
+            color: #2d3436;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell:active {
+            transform: scale(0.95);
+        }
+
+        .cell.selected {
+            border-color: #74b9ff;
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .cell.empty {
+            background: transparent;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            border: 3px solid #a8dadc;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        #game-over h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #457b9d;
+        }
+
+        #game-over button {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+        }
+
+        #game-over button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.5);
+        }
+
+        .combo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: bold;
+            color: #ff6b9d;
+            pointer-events: none;
+            animation: comboAnim 0.8s;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+
+        @keyframes comboAnim {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        @keyframes slideIn {
+            0% { 
+                transform: translateY(20px) scale(0.8); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="trays"></div>
+    <div id="score">Score: 0</div>
+    <button id="submit-btn" onclick="checkMatch()" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%); border: none; color: white; font-size: 20px; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4); display: none; z-index: 10;">CHECK</button>
+    <div id="grid"></div>
+    <div id="game-over">
+        <h2>GAME OVER</h2>
+        <div id="final-score"></div>
+        <button onclick="location.reload()">PLAY AGAIN</button>
+    </div>
+
+    <script>
+        const GRID_ROWS = 8;
+        const GRID_COLS = 6;
+        const SPAWN_INTERVAL = 3500;
+
+        let grid = [];
+        let selectedCells = [];
+        let trays = [];
+        let score = 0;
+        let gameOver = false;
+        let comboCount = 0;
+        let lastMatchTime = 0;
+        let currentRow = GRID_ROWS - 1;
+
+        function init() {
+            createGrid();
+            createTrays(3);
+            fillInitialGrid();
+            startSpawning();
+        }
+
+        function createGrid() {
+            const gridEl = document.getElementById('grid');
+            for (let i = 0; i < GRID_ROWS * GRID_COLS; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell empty';
+                cell.dataset.index = i;
+                cell.onclick = () => selectCell(i);
+                gridEl.appendChild(cell);
+                grid.push({ value: null, element: cell });
+            }
+        }
+
+        function createTrays(count) {
+            const traysEl = document.getElementById('trays');
+            traysEl.innerHTML = '';
+            trays = [];
+
+            for (let i = 0; i < count; i++) {
+                const target = Math.floor(Math.random() * 13) + 6; // 6-18 range for sums of 1-9
+                const slots = 3;
+                const tray = {
+                    target,
+                    slots,
+                    filled: 0
+                };
+                trays.push(tray);
+
+                const trayEl = document.createElement('div');
+                trayEl.className = 'tray';
+                trayEl.innerHTML = `
+                    <div class="tray-target">${target}</div>
+                    <div class="tray-progress" id="tray-${i}">
+                        ${Array(slots).fill('<div class="tray-slot"></div>').join('')}
+                    </div>
+                `;
+                traysEl.appendChild(trayEl);
+            }
+        }
+
+        function fillInitialGrid() {
+            // Fill bottom 3 rows initially
+            for (let i = 0; i < 3; i++) {
+                spawnNumber();
+            }
+        }
+
+        function spawnNumber() {
+            // Check if current row is full
+            let rowFull = true;
+            for (let col = 0; col < GRID_COLS; col++) {
+                const idx = currentRow * GRID_COLS + col;
+                if (grid[idx].value === null) {
+                    rowFull = false;
+                    break;
+                }
+            }
+            
+            if (rowFull) {
+                currentRow--;
+                if (currentRow < 0) {
+                    endGame();
+                    return;
+                }
+            }
+            
+            // Spawn entire row
+            for (let col = 0; col < GRID_COLS; col++) {
+                const idx = currentRow * GRID_COLS + col;
+                
+                if (grid[idx].value === null) {
+                    // Generate numbers that can form solutions
+                    let value;
+                    if (Math.random() < 0.4) {
+                        const existingNumbers = grid.filter(cell => cell.value !== null).map(cell => cell.value);
+                        const possiblePairs = [];
+                        
+                        for (let tray of trays) {
+                            if (tray.filled < tray.slots) {
+                                for (let num of existingNumbers) {
+                                    const needed = tray.target - num;
+                                    if (needed >= 1 && needed <= 9) {
+                                        possiblePairs.push(needed);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (possiblePairs.length > 0) {
+                            value = possiblePairs[Math.floor(Math.random() * possiblePairs.length)];
+                        } else {
+                            value = Math.floor(Math.random() * 9) + 1;
+                        }
+                    } else {
+                        value = Math.floor(Math.random() * 9) + 1;
+                    }
+                    
+                    grid[idx].value = value;
+                    grid[idx].element.textContent = value;
+                    grid[idx].element.classList.remove('empty');
+                    
+                    // Add slide-in animation
+                    grid[idx].element.style.animation = 'slideIn 0.4s ease-out';
+                    grid[idx].element.style.animationDelay = `${col * 0.05}s`;
+                }
+            }
+        }
+
+        function selectCell(index) {
+            if (gameOver || grid[index].value === null) return;
+
+            const cell = grid[index].element;
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (selectedCells.includes(index)) {
+                selectedCells = selectedCells.filter(i => i !== index);
+                cell.classList.remove('selected');
+            } else if (selectedCells.length < 2) {
+                selectedCells.push(index);
+                cell.classList.add('selected');
+                
+                // Only auto-check when 2 cells selected
+                if (selectedCells.length === 2) {
+                    submitBtn.style.display = 'none';
+                    setTimeout(() => checkMatch(), 100);
+                }
+            }
+            
+            // Show/hide submit button
+            if (selectedCells.length === 1) {
+                submitBtn.style.display = 'block';
+            } else {
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function checkMatch() {
+            const sum = selectedCells.reduce((acc, idx) => acc + grid[idx].value, 0);
+            
+            let matched = false;
+            for (let i = 0; i < trays.length; i++) {
+                if (trays[i].target === sum && trays[i].filled < trays[i].slots) {
+                    matched = true;
+                    trays[i].filled++;
+                    
+                    document.querySelectorAll(`#tray-${i} .tray-slot`)[trays[i].filled - 1].classList.add('filled');
+                    
+                    selectedCells.forEach(idx => {
+                        grid[idx].value = null;
+                        grid[idx].element.textContent = '';
+                        grid[idx].element.classList.add('empty');
+                        grid[idx].element.classList.remove('selected');
+                    });
+                    
+                    const now = Date.now();
+                    if (now - lastMatchTime < 3000) {
+                        comboCount++;
+                    } else {
+                        comboCount = 1;
+                    }
+                    lastMatchTime = now;
+
+                    if (comboCount > 1) {
+                        showCombo(comboCount);
+                    }
+
+                    const points = 10 * comboCount;
+                    score += points;
+                    document.getElementById('score').textContent = `Score: ${score}`;
+                    
+                    if (trays[i].filled === trays[i].slots) {
+                        score += 50;
+                        setTimeout(() => {
+                            trays.splice(i, 1);
+                            createTrays(trays.length + 1);
+                        }, 300);
+                    }
+                    
+                    setTimeout(() => applyGravity(), 100);
+                    break;
+                }
+            }
+
+            if (!matched) {
+                selectedCells.forEach(idx => {
+                    grid[idx].element.classList.remove('selected');
+                });
+            }
+            
+            selectedCells = [];
+        }
+
+        function showCombo(count) {
+            const comboEl = document.createElement('div');
+            comboEl.className = 'combo';
+            comboEl.textContent = `${count}x COMBO!`;
+            document.body.appendChild(comboEl);
+            setTimeout(() => comboEl.remove(), 800);
+        }
+
+        function applyGravity() {
+            for (let col = 0; col < GRID_COLS; col++) {
+                for (let row = GRID_ROWS - 1; row >= 0; row--) {
+                    const idx = row * GRID_COLS + col;
+                    if (grid[idx].value === null) {
+                        for (let r = row - 1; r >= 0; r--) {
+                            const aboveIdx = r * GRID_COLS + col;
+                            if (grid[aboveIdx].value !== null) {
+                                grid[idx].value = grid[aboveIdx].value;
+                                grid[idx].element.textContent = grid[aboveIdx].value;
+                                grid[idx].element.classList.remove('empty');
+                                
+                                grid[aboveIdx].value = null;
+                                grid[aboveIdx].element.textContent = '';
+                                grid[aboveIdx].element.classList.add('empty');
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function startSpawning() {
+            setInterval(() => {
+                if (!gameOver) {
+                    spawnNumber();
+                }
+            }, SPAWN_INTERVAL);
+        }
+
+        function endGame() {
+            gameOver = true;
+            document.getElementById('final-score').innerHTML = `
+                <p style="font-size: 32px; margin: 20px 0;">Final Score: ${score}</p>
+            `;
+            document.getElementById('game-over').style.display = 'block';
+        }
+
+        init();
+    </script>
+</body>
+</html>
