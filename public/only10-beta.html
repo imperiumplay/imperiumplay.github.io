@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Match Game</title>
+<style>
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#game-container {
+    background: #34495e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+#target-display {
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(6, 60px);
+    grid-template-rows: repeat(10, 60px);
+    gap: 5px;
+    position: relative;
+    width: 385px;
+    height: 645px;
+}
+
+.bubble {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+}
+
+.bubble.default {
+    background: #3498db;
+    color: white;
+}
+
+.bubble.selected {
+    background: #f39c12;
+    color: white;
+    transform: scale(1.1);
+}
+
+.bubble.falling {
+    animation: fall 0.5s ease-in-out;
+}
+
+.bubble.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes fall {
+    from { transform: translateY(-65px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+</style>
+</head>
+<body>
+<div id="game-container">
+    <div id="target-display">Target: 10</div>
+    <div id="grid"></div>
+</div>
+
+<script>
+class Game {
+    constructor() {
+        this.rows = 10;
+        this.cols = 6;
+        this.targetNumber = 10;
+        this.grid = Array(this.rows).fill(null).map(() => Array(this.cols).fill(null));
+        this.selectedBubble = null;
+        this.gridElement = document.getElementById('grid');
+        
+        this.init();
+    }
+    
+    init() {
+        this.spawnRow();
+        this.spawnRow();
+        setInterval(() => this.spawnRow(), 3000);
+    }
+    
+    spawnRow() {
+        for (let col = 0; col < this.cols; col++) {
+            setTimeout(() => this.spawnBubble(col), col * 150);
+        }
+    }
+    
+    spawnBubble(col) {
+        const row = this.getLowestEmptyRow(col);
+        if (row < 0) return;
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble default falling';
+        bubble.textContent = Math.floor(Math.random() * 9) + 1;
+        bubble.style.left = `${col * 65}px`;
+        bubble.style.top = `${row * 65}px`;
+        
+        bubble.addEventListener('click', () => this.onBubbleClick(bubble, row, col));
+        
+        this.gridElement.appendChild(bubble);
+        this.grid[row][col] = bubble;
+        
+        setTimeout(() => bubble.classList.remove('falling'), 500);
+    }
+    
+    getLowestEmptyRow(col) {
+        for (let row = this.rows - 1; row >= 0; row--) {
+            if (!this.grid[row][col]) return row;
+        }
+        return -1;
+    }
+    
+    onBubbleClick(bubble, row, col) {
+        const value = parseInt(bubble.textContent);
+        
+        if (value === this.targetNumber) {
+            this.burstBubble(bubble, row, col);
+            return;
+        }
+        
+        if (!this.selectedBubble) {
+            this.selectedBubble = { bubble, row, col, value };
+            bubble.classList.remove('default');
+            bubble.classList.add('selected');
+            return;
+        }
+        
+        if (this.selectedBubble.bubble === bubble) {
+            bubble.classList.remove('selected');
+            bubble.classList.add('default');
+            this.selectedBubble = null;
+            return;
+        }
+        
+        if (this.selectedBubble.value + value === this.targetNumber) {
+            this.burstBubble(this.selectedBubble.bubble, this.selectedBubble.row, this.selectedBubble.col);
+            this.burstBubble(bubble, row, col);
+            this.selectedBubble = null;
+        } else {
+            this.shakeAndDeselect(this.selectedBubble.bubble, bubble);
+        }
+    }
+    
+    burstBubble(bubble, row, col) {
+        this.grid[row][col] = null;
+        bubble.remove();
+        setTimeout(() => this.applyGravity(col), 200);
+    }
+    
+    shakeAndDeselect(bubble1, bubble2) {
+        bubble1.classList.add('shake');
+        bubble2.classList.add('shake');
+        
+        setTimeout(() => {
+            bubble1.classList.remove('shake', 'selected');
+            bubble1.classList.add('default');
+            bubble2.classList.remove('shake');
+            this.selectedBubble = null;
+        }, 300);
+    }
+    
+    applyGravity(col) {
+        for (let row = this.rows - 1; row >= 0; row--) {
+            if (!this.grid[row][col]) {
+                for (let aboveRow = row - 1; aboveRow >= 0; aboveRow--) {
+                    if (this.grid[aboveRow][col]) {
+                        const bubble = this.grid[aboveRow][col];
+                        this.grid[row][col] = bubble;
+                        this.grid[aboveRow][col] = null;
+                        
+                        bubble.style.transition = 'top 0.3s ease-in-out';
+                        bubble.style.top = `${row * 65}px`;
+                        
+                        bubble.removeEventListener('click', bubble.onclick);
+                        bubble.addEventListener('click', () => this.onBubbleClick(bubble, row, col));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+new Game();
+</script>
+</body>
+</html>
