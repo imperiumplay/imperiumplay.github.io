@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const footerLinks = [
+  { href: "/blog", text: "Blog" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout 
+  title="Account Deletion - SumRush | ImperiumPlay"
+  description="Delete your SumRush account and associated data"
+  canonicalUrl="https://imperiumplay.com/account-deletion/sumrush"
+>
+  <main class="deletion-page">
+    <section class="content">
+      <h1>Delete Your SumRush Account</h1>
+      
+      <div class="instructions">
+        <h2>How to Delete Your Account</h2>
+        <ol>
+          <li>Open the SumRush app</li>
+          <li>Go to Settings</li>
+          <li>Tap "Delete Account"</li>
+          <li>Confirm deletion</li>
+        </ol>
+        
+        <h2>What Gets Deleted</h2>
+        <ul>
+          <li>Your profile data</li>
+          <li>Game progress and scores</li>
+          <li>Leaderboard entries</li>
+          <li>All associated account information</li>
+        </ul>
+        
+        <p class="warning">Account deletion is permanent and cannot be undone.</p>
+      </div>
+    </section>
+  </main>
+  
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+.deletion-page {
+  min-height: 80vh;
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #2d2d2d;
+}
+
+.instructions {
+  background: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.instructions h2 {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem 0;
+  color: #2d2d2d;
+}
+
+.instructions h2:first-child {
+  margin-top: 0;
+}
+
+.instructions ol, .instructions ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.instructions li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.warning {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  color: #856404;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .deletion-page {
+    padding: 2rem 1rem;
+  }
+  
+  .content h1 {
+    font-size: 2rem;
+  }
+  
+  .instructions {
+    padding: 1.5rem;
+  }
+}
+</style>
