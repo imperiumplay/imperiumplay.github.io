@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+
+const footerLinks = [
+  { href: "/", text: "Home" },
+  { href: "/how-to-play", text: "All Games" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout
+  title="How to Play - Sum Rush"
+  description="Learn how to play Sum Rush - tap two number bubbles that add up to the target before the board fills up."
+>
+  <div class="container">
+    <h1>How to Play <span class="highlight">Sum Rush</span></h1>
+
+    <div class="section">
+      <h2>Game Overview</h2>
+      <p>Sum Rush is a fast-paced number-matching game. Bubbles with numbers fall onto the board, and your job is to tap two bubbles that add up to the target number to clear them. Keep the board from filling up to the top — the longer you survive, the faster it gets!</p>
+    </div>
+
+    <div class="section">
+      <h2>Basic Rules</h2>
+      <ul>
+        <li>Tap two bubbles whose numbers add up to the target shown on screen</li>
+        <li>Matched pairs pop and clear space on the board</li>
+        <li>New bubbles keep falling and stack up in columns</li>
+        <li>If a column reaches the top of the board, the game is over</li>
+      </ul>
+
+      <div class="gameplay-tip">
+        <strong>Pro Tip:</strong> Clear the tallest columns first. A quick pair in a dangerous column buys you more time than the easiest pair on the board.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Game Modes</h2>
+      <h3>Unlimited</h3>
+      <p>An endless run where the target is always 10. Difficulty comes in waves — calm stretches to catch your breath, then rushes that push your speed. Each wave gets a little harder. Survive as long as you can and chase your high score on the leaderboard.</p>
+
+      <h3>Adventure</h3>
+      <p>A 1000-level campaign. Each level has its own target number and a quota of pairs to clear. Complete the quota before the board fills to beat the level. Levels gradually get faster and introduce trickier number combinations as you progress through the chapters.</p>
+    </div>
+
+    <div class="section">
+      <h2>Powerups</h2>
+      <p>When the board gets crowded, these powerups can save your run:</p>
+      <div class="powerup-section">
+        <h3>Freeze</h3>
+        <p>Stops new bubbles from spawning for a few seconds, giving you time to clear pairs without pressure.</p>
+
+        <h3>Blast</h3>
+        <p>Tap anywhere on the board to blow up all bubbles in the area around it.</p>
+
+        <h3>Number Blast</h3>
+        <p>Pick a number, and every bubble with that number — plus every bubble that pairs with it to reach the target — is cleared from the board.</p>
+      </div>
+    </div>
+
+    <Footer links={footerLinks} />
+  </div>
+</BaseLayout>
+
+<style>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0 0 2rem 0;
+  letter-spacing: 2px;
+  font-weight: 300;
+  text-align: center;
+  animation: fadeIn 2s ease-in;
+}
+
+h2 {
+  color: #7c9885;
+  font-weight: 400;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+h3 {
+  color: #7c9885;
+  font-weight: 400;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
+p {
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+ul {
+  padding-left: 2rem;
+}
+
+li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.5s ease-in;
+}
+
+.gameplay-tip {
+  background: #f8f9fa;
+  border-left: 4px solid #7c9885;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.powerup-section {
+  background: #f4f9f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+</style>
