@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+
+const games = [
+  {
+    href: "/how-to-play/crazy-crosswords",
+    icon: "/images/Icon_crazycrosswords.jpg",
+    title: "Crazy Crosswords",
+    description: "Arrange letters to form valid words in rows and columns."
+  },
+  {
+    href: "/how-to-play/sum-rush",
+    icon: "/images/Icon_sumrush.png",
+    title: "Sum Rush",
+    description: "Tap two bubbles that add up to the target before the board fills up."
+  }
+];
+
+const footerLinks = [
+  { href: "/", text: "Home" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+---
+
+<BaseLayout
+  title="How to Play - ImperiumPlay Games"
+  description="Guides for all ImperiumPlay games. Learn the rules, controls, and tips for each game."
+>
+  <div class="container">
+    <h1>How to <span class="highlight">Play</span></h1>
+    <p class="intro">Pick a game to see its rules, controls, and tips.</p>
+
+    <div class="game-list">
+      {games.map(game => (
+        <a href={game.href} class="game-card">
+          <img src={game.icon} alt={game.title} class="game-icon">
+          <div>
+            <h2>{game.title}</h2>
+            <p>{game.description}</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      ))}
+    </div>
+
+    <Footer links={footerLinks} />
+  </div>
+</BaseLayout>
+
+<style>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem 0;
+  letter-spacing: 2px;
+  font-weight: 300;
+  text-align: center;
+  animation: fadeIn 2s ease-in;
+}
+
+.intro {
+  text-align: center;
+  margin: 0 0 2rem 0;
+  opacity: 0.7;
+}
+
+.game-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  animation: fadeIn 1.5s ease-in;
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.game-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.game-card h2 {
+  color: #7c9885;
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin: 0 0 0.3rem 0;
+}
+
+.game-card p {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.arrow {
+  margin-left: auto;
+  color: #7c9885;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .game-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .arrow {
+    display: none;
+  }
+}
+</style>

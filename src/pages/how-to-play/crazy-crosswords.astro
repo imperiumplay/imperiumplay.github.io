@@ -1,15 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
 import { Image } from 'astro:assets';
 
 // Import images
-import appStoreBadge from '../assets/images/badges/app-store-badge.svg';
-import googlePlayBadge from '../assets/images/badges/google-play-badge.png';
-import gameplayThumbnail from '../assets/images/crazy-crosswords/gameplay-thumbnail.png';
+import appStoreBadge from '../../assets/images/badges/app-store-badge.svg';
+import googlePlayBadge from '../../assets/images/badges/google-play-badge.png';
+import gameplayThumbnail from '../../assets/images/crazy-crosswords/gameplay-thumbnail.png';
 
 const footerLinks = [
   { href: "/", text: "Home" },
+  { href: "/how-to-play", text: "All Games" },
   { href: "/crazy-crosswords", text: "Game Details" },
   { href: "/privacy-policy", text: "Privacy Policy" },
   { href: "/terms", text: "Terms & Conditions" }
