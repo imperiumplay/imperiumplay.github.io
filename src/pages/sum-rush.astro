@@ -1,0 +1,485 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const APP_STORE = "https://apps.apple.com/us/app/sum-rush/id6757355561";
+const PLAY_STORE = "https://play.google.com/store/apps/details?id=com.imperiumplay.SumRush";
+
+const footerLinks = [
+  { href: "/", text: "Home" },
+  { href: "/how-to-play/sum-rush", text: "How to Play" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/terms", text: "Terms & Conditions" }
+];
+
+const features = [
+  {
+    icon: "⚡",
+    title: "Fast Mental Math",
+    description: "Tap two bubbles that add up to the target. Simple to learn, relentless once the board starts filling."
+  },
+  {
+    icon: "♾️",
+    title: "Unlimited Mode",
+    description: "An endless run where the target is always 10. Calm stretches, then rushes — survive as long as you can."
+  },
+  {
+    icon: "🚩",
+    title: "1000-Level Adventure",
+    description: "Every level brings its own target number and clear quota, getting faster and trickier as you climb."
+  },
+  {
+    icon: "❄️",
+    title: "Powerups",
+    description: "Freeze the spawns, Blast an area, or wipe every bubble of one number when the board gets dangerous."
+  }
+];
+
+const screenshots = [
+  { src: "/images/sum-rush/05-home.png", alt: "Sum Rush home screen with Unlimited and Adventure modes" },
+  { src: "/images/sum-rush/01-unlimited.png", alt: "Unlimited mode gameplay — make 10 fast" },
+  { src: "/images/sum-rush/02-adventure.png", alt: "Adventure mode level map" },
+  { src: "/images/sum-rush/03-levelcomplete.png", alt: "Level complete screen" },
+  { src: "/images/sum-rush/04-leaderboard.png", alt: "Global leaderboard" }
+];
+
+const faqs = [
+  {
+    question: "How do I play Sum Rush?",
+    answer: "Tap two number bubbles that add up to the target shown at the top. Matched pairs pop and clear space. New bubbles keep falling — if a column reaches the top, the run is over."
+  },
+  {
+    question: "What is the difference between Unlimited and Adventure?",
+    answer: "Unlimited is an endless run with a fixed target of 10, scored on a global leaderboard. Adventure is a 1000-level campaign where each level has its own target number and a quota of pairs to clear."
+  },
+  {
+    question: "Is the game free to play?",
+    answer: "Yes. Sum Rush is free to download and play, with optional in-app purchases for coins and powerups."
+  },
+  {
+    question: "What do the powerups do?",
+    answer: "Freeze stops new bubbles from spawning for a few seconds. Blast blows up every bubble around the spot you tap. Number Blast clears every bubble of a chosen number along with everything that pairs with it."
+  },
+  {
+    question: "Can I play offline?",
+    answer: "Yes. Both modes work without an internet connection — you only need to be online to sync your leaderboard score."
+  },
+  {
+    question: "How do I delete my account?",
+    answer: "You can delete your account and all associated data from inside the game. See the account deletion page for step-by-step instructions."
+  }
+];
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sum Rush",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "iOS, Android",
+    "description": "Fast-paced number game. Tap two bubbles that add up to the target before the board fills up.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+    }))
+  }
+];
+---
+
+<BaseLayout
+  title="Sum Rush - Fast Number Puzzle Game by ImperiumPlay"
+  description="Tap two number bubbles that add up to the target before the board fills up. Endless Unlimited mode and a 1000-level Adventure. Free on iOS and Android."
+  keywords="sum rush, number game, math game, puzzle game, mobile game"
+  ogUrl="https://imperiumplay.com/sum-rush"
+  canonicalUrl="https://imperiumplay.com/sum-rush"
+  structuredData={structuredData}
+>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="game-intro">
+          <img src="/images/Icon_sumrush.png" alt="Sum Rush Icon" class="game-icon" width="120" height="120">
+          <h1><span class="highlight">Sum</span>Rush</h1>
+          <p class="tagline">Make 10. Fast.</p>
+          <p class="description">
+            Number bubbles keep falling. Tap two that add up to the target to pop them and buy yourself room. Let a column reach the top and it's over — how long can you keep up?
+          </p>
+
+          <div class="store-buttons">
+            <a href={APP_STORE} class="store-button ios" target="_blank" rel="noopener">
+              <img src="/images/badges/app-store-badge.svg" alt="Download on the App Store" class="store-badge">
+            </a>
+            <a href={PLAY_STORE} class="store-button android" target="_blank" rel="noopener">
+              <img src="/images/badges/google-play-badge.png" alt="Get it on Google Play" class="store-badge google-play">
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-shot">
+          <img src="/images/sum-rush/01-unlimited.png" alt="Sum Rush gameplay" width="720" height="1280">
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <h2>Game Features</h2>
+        <div class="features-grid">
+          {features.map(feature => (
+            <div class="feature-card">
+              <div class="feature-icon">{feature.icon}</div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshots Gallery -->
+    <section class="screenshots">
+      <div class="container">
+        <h2>Game Screenshots</h2>
+        <div class="screenshot-gallery">
+          {screenshots.map(shot => (
+            <div class="screenshot">
+              <img src={shot.src} alt={shot.alt} class="screenshot-img" loading="lazy" width="720" height="1280">
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+          {faqs.map((faq, index) => (
+            <details class="faq-item" open={index === 0}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+        <p class="faq-more">
+          Want the full breakdown? Read the <a href="/how-to-play/sum-rush">How to Play guide</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Beat the Board?</h2>
+        <p>Download Sum Rush and see how long you last.</p>
+        <div class="store-buttons">
+          <a href={APP_STORE} class="store-button ios" target="_blank" rel="noopener">
+            <img src="/images/badges/app-store-badge.svg" alt="Download on the App Store" class="store-badge">
+          </a>
+          <a href={PLAY_STORE} class="store-button android" target="_blank" rel="noopener">
+            <img src="/images/badges/google-play-badge.png" alt="Get it on Google Play" class="store-badge google-play">
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer links={footerLinks} />
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(126, 176, 232, 0.18) 0%, rgba(240, 230, 239, 0.25) 100%);
+  }
+
+  .hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .game-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
+    margin: 0 auto 1.5rem;
+    display: block;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    margin: 0;
+    letter-spacing: 2px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .tagline {
+    font-size: 1.4rem;
+    margin: 0.5rem 0 1.5rem;
+    opacity: 0.8;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .description {
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+    text-align: center;
+  }
+
+  .hero-shot img {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  }
+
+  .store-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .store-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-height: 44px;
+  }
+
+  .store-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  .store-badge {
+    height: 40px;
+    width: auto;
+  }
+
+  .store-badge.google-play {
+    height: 60px;
+  }
+
+  /* Shared section styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features h2, .screenshots h2, .faq h2, .cta h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    color: #4a4a4a;
+  }
+
+  /* Features Section */
+  .features {
+    padding: 5rem 2rem;
+    background: #fff;
+  }
+
+  .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .feature-card {
+    flex: 1 1 250px;
+    min-width: 250px;
+    max-width: 350px;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    color: #7c9885;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  /* Screenshots Gallery */
+  .screenshots {
+    padding: 5rem 2rem;
+    background: #f8f9fa;
+  }
+
+  .screenshot-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .screenshot-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  /* FAQ Section */
+  .faq {
+    padding: 5rem 2rem;
+    background: #fff;
+  }
+
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+
+  .faq-item summary {
+    font-weight: 500;
+    cursor: pointer;
+    padding: 1rem 0;
+    color: #4a4a4a;
+  }
+
+  .faq-item summary:hover {
+    color: #7c9885;
+  }
+
+  .faq-item p {
+    padding: 1rem;
+    margin: 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    line-height: 1.6;
+  }
+
+  .faq-more {
+    text-align: center;
+    margin-top: 2rem;
+    opacity: 0.8;
+  }
+
+  /* CTA Section */
+  .cta {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, rgba(126, 176, 232, 0.25) 0%, rgba(240, 230, 239, 0.35) 100%);
+    text-align: center;
+  }
+
+  .cta p {
+    max-width: 600px;
+    margin: 1rem auto 2rem;
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 3rem 1rem;
+    }
+
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .hero-shot img {
+      max-width: 280px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+    }
+
+    .features, .screenshots, .faq, .cta {
+      padding: 3rem 1rem;
+    }
+
+    .features h2, .screenshots h2, .faq h2, .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-card {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.2rem;
+    }
+
+    .tagline {
+      font-size: 1rem;
+    }
+
+    .description {
+      font-size: 1rem;
+    }
+
+    .game-icon {
+      width: 100px;
+      height: 100px;
+    }
+
+    .screenshot-gallery {
+      grid-template-columns: 1fr;
+    }
+
+    .store-badge {
+      height: 36px;
+    }
+  }
+</style>
