@@ -3,112 +3,125 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
 
 const footerLinks = [
-  { href: "/blog", text: "Blog" },
+  { href: "/", text: "Home" },
+  { href: "/how-to-play/sum-rush", text: "How to Play" },
   { href: "/privacy-policy", text: "Privacy Policy" },
   { href: "/terms", text: "Terms & Conditions" }
 ];
 ---
 
-<BaseLayout 
-  title="Account Deletion - SumRush | ImperiumPlay"
-  description="Delete your SumRush account and associated data"
+<BaseLayout
+  title="Delete Your Account - Sum Rush"
+  description="How to delete your Sum Rush account and all associated data from within the game."
   canonicalUrl="https://imperiumplay.com/account-deletion/sumrush"
 >
-  <main class="deletion-page">
-    <section class="content">
-      <h1>Delete Your SumRush Account</h1>
-      
-      <div class="instructions">
-        <h2>How to Delete Your Account</h2>
-        <ol>
-          <li>Open the SumRush app</li>
-          <li>Go to Settings</li>
-          <li>Tap "Delete Account"</li>
-          <li>Confirm deletion</li>
-        </ol>
-        
-        <h2>What Gets Deleted</h2>
-        <ul>
-          <li>Your profile data</li>
-          <li>Game progress and scores</li>
-          <li>Leaderboard entries</li>
-          <li>All associated account information</li>
-        </ul>
-        
-        <p class="warning">Account deletion is permanent and cannot be undone.</p>
+  <div class="container">
+    <h1>Delete Your <span class="highlight">Sum Rush</span> Account</h1>
+
+    <div class="section">
+      <h2>Delete From Inside the Game</h2>
+      <ol>
+        <li>Open <strong>Sum Rush</strong> on your device</li>
+        <li>Tap the <strong>Settings</strong> (gear) icon on the home screen</li>
+        <li>Tap <strong>Delete Account</strong></li>
+        <li>Read the confirmation and tap <strong>Delete</strong></li>
+      </ol>
+      <p>Once deletion completes, the game shows an <strong>Account Deleted</strong> message and closes. The next time you open Sum Rush you start with a brand new, empty account.</p>
+
+      <div class="gameplay-tip">
+        <strong>Note:</strong> Deletion is immediate and permanent. There is no undo and no recovery window.
       </div>
-    </section>
-  </main>
-  
-  <Footer links={footerLinks} />
+    </div>
+
+    <div class="section">
+      <h2>What Gets Deleted</h2>
+      <ul>
+        <li>Your account and its sign-in identity</li>
+        <li>Coins, powerups and adventure progress</li>
+        <li>High scores and game data stored on our servers</li>
+        <li>Every leaderboard entry you have ever submitted</li>
+        <li>Locally saved settings and progress on the device</li>
+      </ul>
+      <p>Nothing is kept in a "deleted" or archived state. There is no retention period — the data is removed as part of the deletion request.</p>
+    </div>
+
+    <div class="section">
+      <h2>Delete Before You Uninstall</h2>
+      <p>Sum Rush lets you play as a guest — no email, no username, no sign-up. A guest account exists only on the device it was created on, and uninstalling the game does not delete it from our servers. It also leaves us with nothing to identify you by, so we cannot look it up or delete it on request afterwards.</p>
+      <p><strong>If you want your data gone, delete your account from inside the game before uninstalling.</strong></p>
+      <p>If you signed in with Google Play Games or Apple Game Center, your account is tied to that platform account instead of to the install — signing in with the same one gets you back to the same account, and you can delete it at any time using the steps above.</p>
+      <p>Any other questions about your data? Email <a href="mailto:bsharma@imperiumplay.com?subject=Sum%20Rush%20Account%20Deletion">bsharma@imperiumplay.com</a>.</p>
+      <p>For details on what we collect and why, see our <a href="/privacy-policy">Privacy Policy</a>.</p>
+    </div>
+
+    <Footer links={footerLinks} />
+  </div>
 </BaseLayout>
 
 <style>
-.deletion-page {
-  min-height: 80vh;
-  padding: 4rem 2rem;
+.container {
   max-width: 800px;
   margin: 0 auto;
+  padding: 3rem 2rem;
 }
 
-.content h1 {
+h1 {
   font-size: 2.5rem;
-  margin-bottom: 2rem;
-  color: #7c9885;
+  margin: 0 0 2rem 0;
+  letter-spacing: 2px;
   font-weight: 300;
   text-align: center;
+  animation: fadeIn 2s ease-in;
 }
 
-.instructions {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-
-.instructions h2 {
-  font-size: 1.5rem;
-  margin: 1.5rem 0 1rem 0;
+h2 {
   color: #7c9885;
   font-weight: 400;
-}
-
-.instructions h2:first-child {
   margin-top: 0;
+  font-size: 1.5rem;
 }
 
-.instructions ol, .instructions ul {
+p {
+  line-height: 1.6;
   margin: 1rem 0;
-  padding-left: 1.5rem;
 }
 
-.instructions li {
+ol, ul {
+  padding-left: 2rem;
+}
+
+li {
   margin: 0.5rem 0;
   line-height: 1.6;
-  color: #666;
 }
 
-.warning {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: rgba(124, 152, 133, 0.1);
+a {
+  color: #7c9885;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.5s ease-in;
+}
+
+.gameplay-tip {
+  background: #f8f9fa;
   border-left: 4px solid #7c9885;
-  color: #648670;
-  font-weight: 500;
-  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
 }
 
 @media (max-width: 768px) {
-  .deletion-page {
+  .container {
     padding: 2rem 1rem;
   }
-  
-  .content h1 {
+
+  h1 {
     font-size: 2rem;
-  }
-  
-  .instructions {
-    padding: 1.5rem;
   }
 }
 </style>
