@@ -52,11 +52,7 @@
           },
           {
             "/": "*sum-rush*",
-            "comment": "Sum Rush pages open in the Sum Rush app"
-          },
-          {
-            "/": "*sumrush*",
-            "comment": "Covers /account-deletion/sumrush"
+            "comment": "Sum Rush pages open in the Sum Rush app. /account-deletion/sumrush is deliberately not claimed — that flow has to stay on the web."
           }
         ]
       }
