@@ -10,5 +10,17 @@
         "80:B8:E6:73:EF:24:52:E8:8B:B1:DF:A6:B7:A1:04:DF:ED:7C:1D:A1:F3:7E:9E:BB:87:77:D2:0B:01:78:47:1E"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.imperiumplay.sumrush",
+      "sha256_cert_fingerprints": [
+        "D2:C6:BD:D3:DC:B9:7A:72:02:F5:98:66:4E:8F:34:88:C0:CB:28:7C:5F:A9:21:F9:A5:15:C7:B7:66:78:1A:DC"
+      ]
+    }
   }
 ]
