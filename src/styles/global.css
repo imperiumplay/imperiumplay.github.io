@@ -29,18 +29,12 @@ body {
   }
 }
 
-/* Responsive Design */
+/* Responsive Design
+   Only rules that still have owners live here. The old .hero-content h1 /
+   .game-showcase / .game-title overrides were dropped: the first fought the
+   homepage's own breakpoints with !important, and the other two named classes
+   that no longer exist. Components handle their own responsive CSS now. */
 @media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 3rem !important;
-  }
-  .game-showcase {
-    margin: 1rem !important;
-    padding: 2rem 1rem !important;
-  }
-  .game-title {
-    font-size: 2rem !important;
-  }
   .store-buttons {
     flex-direction: column;
     align-items: center;

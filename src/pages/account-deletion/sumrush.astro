@@ -4,16 +4,15 @@ import Footer from '../../components/Footer.astro';
 
 const footerLinks = [
   { href: "/", text: "Home" },
-  { href: "/how-to-play/sum-rush", text: "How to Play" },
-  { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/terms", text: "Terms & Conditions" }
+  { href: "/how-to-play/sum-rush/", text: "How to Play" },
+  { href: "/privacy-policy/", text: "Privacy Policy" },
+  { href: "/terms/", text: "Terms & Conditions" }
 ];
 ---
 
 <BaseLayout
   title="Delete Your Account - Sum Rush"
   description="How to delete your Sum Rush account and all associated data from within the game."
-  canonicalUrl="https://imperiumplay.com/account-deletion/sumrush"
 >
   <div class="container">
     <h1>Delete Your <span class="highlight">Sum Rush</span> Account</h1>
@@ -51,7 +50,7 @@ const footerLinks = [
       <p><strong>If you want your data gone, delete your account from inside the game before uninstalling.</strong></p>
       <p>If you signed in with Google Play Games or Apple Game Center, your account is tied to that platform account instead of to the install — signing in with the same one gets you back to the same account, and you can delete it at any time using the steps above.</p>
       <p>Any other questions about your data? Email <a href="mailto:bsharma@imperiumplay.com?subject=Sum%20Rush%20Account%20Deletion">bsharma@imperiumplay.com</a>.</p>
-      <p>For details on what we collect and why, see our <a href="/privacy-policy">Privacy Policy</a>.</p>
+      <p>For details on what we collect and why, see our <a href="/privacy-policy/">Privacy Policy</a>.</p>
     </div>
 
     <Footer links={footerLinks} />

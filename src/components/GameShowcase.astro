@@ -1,106 +1,191 @@
 ---
+import StoreBadges from './StoreBadges.astro';
+
+// Two-column game card for the homepage, mirroring the /sum-rush/ hero layout:
+// device shot on one side, identity + CTAs on the other, alternating down the page.
+// Everything navigable is a real <a> — the old version only had an onclick, so
+// crawlers could not follow it and both game pages ended up orphaned.
 export interface Props {
   icon: string;
   title: string;
+  name: string;
+  tagline: string;
   description: string;
+  shot: string;
+  shotAlt: string;
   iosUrl: string;
   androidUrl: string;
   gamePageUrl: string;
   howToPlayUrl: string;
+  reverse?: boolean;
 }
 
-const { icon, title, description, iosUrl, androidUrl, gamePageUrl, howToPlayUrl } = Astro.props;
+const {
+  icon,
+  title,
+  name,
+  tagline,
+  description,
+  shot,
+  shotAlt,
+  iosUrl,
+  androidUrl,
+  gamePageUrl,
+  howToPlayUrl,
+  reverse = false
+} = Astro.props;
 ---
 
-<div class="game-showcase" onclick={`window.location.href='${gamePageUrl}'`}>
-  <img src={icon} alt={title} class="game-icon">
-  <h2 class="game-title" set:html={title}></h2>
-  <p class="game-description">{description}</p>
-  <div class="store-buttons">
-    <a href={iosUrl} class="store-button" onclick="event.stopPropagation()">Download for iOS</a>
-    <a href={androidUrl} class="store-button" onclick="event.stopPropagation()">Download for Android</a>
+<article class:list={['game-card', { reverse }]}>
+  <div class="shot">
+    <a href={gamePageUrl} tabindex="-1" aria-hidden="true">
+      <img src={shot} alt={shotAlt} width="720" height="1280" loading="lazy">
+    </a>
   </div>
-  <div class="how-to-play">
-    <a href={howToPlayUrl} onclick="event.stopPropagation()">How to Play</a>
+
+  <div class="info">
+    <img src={icon} alt={`${name} app icon`} class="icon" width="84" height="84" loading="lazy">
+    <h3><a href={gamePageUrl} set:html={title}></a></h3>
+    <p class="tagline">{tagline}</p>
+    <p class="description">{description}</p>
+
+    <StoreBadges ios={iosUrl} android={androidUrl} game={name} align="start" />
+
+    <p class="more">
+      <a href={gamePageUrl}>About {name}</a>
+      <span class="dot" aria-hidden="true">·</span>
+      <a href={howToPlayUrl}>How to Play</a>
+    </p>
   </div>
-</div>
+</article>
 
 <style>
-.game-showcase {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  padding: 3rem 2rem;
-  margin: 2rem auto;
-  max-width: 600px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+  .game-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 3.5rem;
+    align-items: center;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 4.5rem 0;
+  }
 
-.game-showcase:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-  background: rgba(255, 255, 255, 0.95);
-}
+  .game-card + .game-card {
+    border-top: 1px solid rgba(124, 152, 133, 0.18);
+  }
 
-.game-icon {
-  width: 100px;
-  height: 100px;
-  border-radius: 20px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
+  /* Alternate the shot side so the page does not read as two identical rows. */
+  .game-card.reverse .shot {
+    order: 2;
+  }
 
-.game-title {
-  font-size: 2.5rem;
-  margin: 1rem 0;
-  font-weight: 300;
-}
+  /* The two store mockups have different aspect ratios, so cap the height
+     rather than the width — otherwise one card towers over the other. */
+  .shot img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 480px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 20px;
+    box-shadow: 0 18px 40px rgba(74, 74, 74, 0.22);
+  }
 
-.game-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: #666;
-}
+  .icon {
+    width: 84px;
+    height: 84px;
+    border-radius: 19px;
+    display: block;
+    margin: 0 0 1.25rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  }
 
-.store-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
+  .info h3 {
+    font-size: 2.75rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin: 0 0 0.5rem;
+  }
 
-.store-button {
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  background: #7c9885;
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-}
+  .info h3 a {
+    color: #4a4a4a;
+    text-decoration: none;
+  }
 
-.store-button:hover {
-  background: #648670;
-  transform: translateY(-2px);
-}
+  .info h3 a:hover {
+    text-decoration: underline;
+    text-decoration-color: rgba(124, 152, 133, 0.6);
+    text-underline-offset: 6px;
+  }
 
-.how-to-play {
-  margin-top: 1.5rem;
-}
+  .tagline {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: #7c9885;
+    margin: 0 0 1rem;
+  }
 
-.how-to-play a {
-  color: #7c9885;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
+  .description {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #666;
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
 
-.how-to-play a:hover {
-  color: #648670;
-  transform: translateY(-2px);
-}
+  .more {
+    margin: 1.25rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .more a {
+    color: #7c9885;
+    text-decoration: none;
+  }
+
+  .more a:hover {
+    text-decoration: underline;
+  }
+
+  .dot {
+    margin: 0 0.6rem;
+    color: rgba(74, 74, 74, 0.35);
+  }
+
+  @media (max-width: 880px) {
+    .game-card {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    /* On one column the shot always leads, whatever the desktop order was. */
+    .game-card.reverse .shot {
+      order: 0;
+    }
+
+    .shot img {
+      max-height: 360px;
+    }
+
+    .icon {
+      margin: 0 auto 1rem;
+    }
+
+    .info h3 {
+      font-size: 2.25rem;
+    }
+
+    .description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .info :global(.store-badges) {
+      justify-content: center;
+    }
+  }
 </style>

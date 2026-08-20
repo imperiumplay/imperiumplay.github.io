@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
+import GameCta from '../../components/GameCta.astro';
 import { Image } from 'astro:assets';
 
 // Import images
@@ -10,10 +11,10 @@ import gameplayThumbnail from '../../assets/images/crazy-crosswords/gameplay-thu
 
 const footerLinks = [
   { href: "/", text: "Home" },
-  { href: "/how-to-play", text: "All Games" },
-  { href: "/crazy-crosswords", text: "Game Details" },
-  { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/terms", text: "Terms & Conditions" }
+  { href: "/how-to-play/", text: "All Games" },
+  { href: "/crazy-crosswords/", text: "Game Details" },
+  { href: "/privacy-policy/", text: "Privacy Policy" },
+  { href: "/terms/", text: "Terms & Conditions" }
 ];
 ---
 
@@ -23,7 +24,12 @@ const footerLinks = [
 >
   <div class="guide-container">
     <header class="guide-header">
-      <h1>How to Play <span class="highlight">Crazy</span>Crosswords</h1>
+      <p class="game-crumb">
+      <img src="/images/Icon_crazycrosswords.jpg" alt="" width="36" height="36">
+      <a href="/crazy-crosswords/">&larr; Crazy Crosswords</a>
+    </p>
+
+    <h1>How to Play <span class="highlight">Crazy</span>Crosswords</h1>
     </header>
     
     <main class="guide-content">
@@ -116,7 +122,16 @@ const footerLinks = [
     </main>
   </div>
   
-  <Footer links={footerLinks} />
+  <GameCta
+      icon="/images/Icon_crazycrosswords.jpg"
+      name="Crazy Crosswords"
+      gamePageUrl="/crazy-crosswords/"
+      iosUrl="https://apps.apple.com/us/app/crazy-crosswords/id6720760088"
+      androidUrl="https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword"
+      blurb="Free on iOS and Android. Daily challenges with leaderboards, plus Word Quest mode."
+    />
+
+    <Footer links={footerLinks} />
 </BaseLayout>
 
 <script>
@@ -175,6 +190,31 @@ const footerLinks = [
 </script>
 
 <style>
+  .game-crumb {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .game-crumb img {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .game-crumb a {
+    color: #7c9885;
+    text-decoration: none;
+  }
+
+  .game-crumb a:hover {
+    text-decoration: underline;
+  }
+
 .guide-container {
   max-width: 900px;
   margin: 0 auto;

@@ -1,0 +1,85 @@
+---
+import StoreBadges from './StoreBadges.astro';
+
+// Closing CTA for the how-to-play pages. Someone who just finished reading the
+// rules had no way to reach the game page or the stores — this is that exit.
+export interface Props {
+  icon: string;
+  name: string;
+  gamePageUrl: string;
+  iosUrl: string;
+  androidUrl: string;
+  blurb: string;
+}
+
+const { icon, name, gamePageUrl, iosUrl, androidUrl, blurb } = Astro.props;
+---
+
+<aside class="game-cta">
+  <img src={icon} alt={`${name} app icon`} class="cta-icon" width="80" height="80" loading="lazy">
+  <h2>Ready to play {name}?</h2>
+  <p>{blurb}</p>
+  <StoreBadges ios={iosUrl} android={androidUrl} game={name} />
+  <p class="cta-link">
+    <a href={gamePageUrl}>Learn more about {name} &rarr;</a>
+  </p>
+</aside>
+
+<style>
+  .game-cta {
+    background: #fff;
+    border-radius: 20px;
+    padding: 3rem 2rem 2.5rem;
+    margin: 3rem 0 1rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(74, 74, 74, 0.08);
+    border: 1px solid rgba(124, 152, 133, 0.18);
+  }
+
+  .cta-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    display: block;
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  }
+
+  .game-cta h2 {
+    font-size: 1.9rem;
+    font-weight: 300;
+    margin: 0 0 0.75rem;
+    color: #4a4a4a;
+  }
+
+  .game-cta p {
+    margin: 0 auto 1.75rem;
+    max-width: 34rem;
+    line-height: 1.6;
+    color: #666;
+  }
+
+  .cta-link {
+    margin: 1.5rem 0 0;
+  }
+
+  .cta-link a {
+    color: #7c9885;
+    text-decoration: none;
+    font-size: 0.98rem;
+  }
+
+  .cta-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .game-cta {
+      padding: 2.5rem 1.25rem 2rem;
+    }
+
+    .game-cta h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

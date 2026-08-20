@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
+import GameCta from '../../components/GameCta.astro';
 
 const footerLinks = [
   { href: "/", text: "Home" },
-  { href: "/how-to-play", text: "All Games" },
-  { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/terms", text: "Terms & Conditions" }
+  { href: "/how-to-play/", text: "All Games" },
+  { href: "/privacy-policy/", text: "Privacy Policy" },
+  { href: "/terms/", text: "Terms & Conditions" }
 ];
 ---
 
@@ -15,6 +16,11 @@ const footerLinks = [
   description="Learn how to play Sum Rush - tap two number bubbles that add up to the target before the board fills up."
 >
   <div class="container">
+    <p class="game-crumb">
+      <img src="/images/Icon_sumrush.png" alt="" width="36" height="36">
+      <a href="/sum-rush/">&larr; Sum Rush</a>
+    </p>
+
     <h1>How to Play <span class="highlight">Sum Rush</span></h1>
 
     <div class="section">
@@ -60,11 +66,45 @@ const footerLinks = [
       </div>
     </div>
 
+    <GameCta
+      icon="/images/Icon_sumrush.png"
+      name="Sum Rush"
+      gamePageUrl="/sum-rush/"
+      iosUrl="https://apps.apple.com/app/id6757355561"
+      androidUrl="https://play.google.com/store/apps/details?id=com.imperiumplay.sumrush"
+      blurb="Free on iOS and Android. Endless Unlimited mode, plus a 1000-level Adventure."
+    />
+
     <Footer links={footerLinks} />
   </div>
 </BaseLayout>
 
 <style>
+  .game-crumb {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .game-crumb img {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .game-crumb a {
+    color: #7c9885;
+    text-decoration: none;
+  }
+
+  .game-crumb a:hover {
+    text-decoration: underline;
+  }
+
 .container {
   max-width: 800px;
   margin: 0 auto;

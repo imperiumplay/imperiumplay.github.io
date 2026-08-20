@@ -3,282 +3,307 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GameShowcase from '../components/GameShowcase.astro';
 import Footer from '../components/Footer.astro';
 
+const games = [
+  {
+    icon: "/images/Icon_sumrush.png",
+    title: 'Sum<span class="highlight">Rush</span>',
+    name: "Sum Rush",
+    tagline: "Make 10. Fast.",
+    description: "Number bubbles keep falling. Tap two that add up to the target to pop them and buy yourself room. Endless Unlimited mode, plus a 1000-level Adventure.",
+    shot: "/images/sum-rush/01-unlimited.png",
+    shotAlt: "Sum Rush gameplay — a board of numbered bubbles with a target of 10",
+    iosUrl: "https://apps.apple.com/app/id6757355561",
+    androidUrl: "https://play.google.com/store/apps/details?id=com.imperiumplay.sumrush",
+    gamePageUrl: "/sum-rush/",
+    howToPlayUrl: "/how-to-play/sum-rush/"
+  },
+  {
+    icon: "/images/Icon_crazycrosswords.jpg",
+    title: 'Crazy<span class="highlight">Crosswords</span>',
+    name: "Crazy Crosswords",
+    tagline: "Every letter has to earn its square.",
+    description: "Arrange letters to build valid words across rows and columns at the same time. Daily challenges with leaderboards, plus the slower Word Quest mode when you want to take your time.",
+    shot: "/images/crazy-crosswords/screens/01.png",
+    shotAlt: "Crazy Crosswords gameplay — letter tiles arranged into a word grid",
+    iosUrl: "https://apps.apple.com/us/app/crazy-crosswords/id6720760088",
+    androidUrl: "https://play.google.com/store/apps/details?id=com.imperiumplay.CrazyCrossword",
+    gamePageUrl: "/crazy-crosswords/",
+    howToPlayUrl: "/how-to-play/crazy-crosswords/"
+  }
+];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "ImperiumPlay",
     "url": "https://imperiumplay.com",
-    "description": "Mobile game development company creating engaging games"
+    "description": "Mobile game studio making Sum Rush and Crazy Crosswords for iOS and Android."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": games.map((game, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": game.name,
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "iOS, Android",
+        "description": game.description,
+        "url": `https://imperiumplay.com${game.gamePageUrl}`,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    }))
   }
 ];
 
 const footerLinks = [
-  { href: "/blog", text: "Blog" },
-  { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/terms", text: "Terms & Conditions" }
+  { href: "/how-to-play/", text: "How to Play" },
+  { href: "/blog/", text: "Blog" },
+  { href: "/privacy-policy/", text: "Privacy Policy" },
+  { href: "/terms/", text: "Terms & Conditions" }
 ];
 ---
 
-<BaseLayout 
-  title="ImperiumPlay - Mobile Game Development"
-  description="ImperiumPlay creates engaging mobile games. Something amazing is brewing - stay tuned for our upcoming releases!"
-  keywords="mobile games, game development, indie games, gaming"
-  ogUrl="https://imperiumplay.com"
-  canonicalUrl="https://imperiumplay.com/"
+<BaseLayout
+  title="Sum Rush & Crazy Crosswords - Free Puzzle Games by ImperiumPlay"
+  description="ImperiumPlay makes Sum Rush, a fast number-matching game with a 1000-level Adventure, and Crazy Crosswords, a word puzzle. Both free on iOS and Android."
+  keywords="sum rush, number puzzle game, math game, crazy crosswords, word puzzle game, free mobile games, ios, android"
   structuredData={structuredData}
 >
   <main>
     <section class="hero">
-      <div class="floating-elements">
-        <div class="game-element element-1">🎮</div>
-        <div class="game-element element-2">🎯</div>
-        <div class="game-element element-3">⭐</div>
-        <div class="game-element element-4">🎲</div>
-        <div class="game-element element-5">🏆</div>
+      <div class="floating-elements" aria-hidden="true">
+        <span class="game-element element-1">🎮</span>
+        <span class="game-element element-2">🎯</span>
+        <span class="game-element element-3">⭐</span>
+        <span class="game-element element-4">🎲</span>
+        <span class="game-element element-5">🏆</span>
       </div>
+
       <div class="hero-content">
-        <div class="brand">
-          <h1><span class="highlight">Imperium</span>Play</h1>
-          <p class="tagline">Redefining Play, One Game at a Time</p>
-          <p class="brewing-message">Something amazing is brewing...</p>
-        </div>
+        <h1><span class="highlight">Imperium</span>Play</h1>
+        <p class="tagline">Redefining Play, One Game at a Time</p>
+        <p class="intro">We make puzzle games for iOS and Android. Wanna try one?</p>
+        <a href="#games" class="hero-cta">See the games</a>
       </div>
     </section>
-    
 
+    <section class="games" id="games">
+      <div class="games-head">
+        <h2>Our Games</h2>
+        <p>Two puzzles, two very different kinds of pressure.</p>
+      </div>
 
+      {games.map((game, i) => (
+        <GameShowcase
+          icon={game.icon}
+          title={game.title}
+          name={game.name}
+          tagline={game.tagline}
+          description={game.description}
+          shot={game.shot}
+          shotAlt={game.shotAlt}
+          iosUrl={game.iosUrl}
+          androidUrl={game.androidUrl}
+          gamePageUrl={game.gamePageUrl}
+          howToPlayUrl={game.howToPlayUrl}
+          reverse={i % 2 === 1}
+        />
+      ))}
+    </section>
   </main>
-  
+
   <Footer links={footerLinks} />
 </BaseLayout>
 
 <style>
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 2rem 1rem;
-  position: relative;
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
+  /* ---- Hero ---------------------------------------------------------- */
   .hero {
+    position: relative;
+    /* Fill the fold. At 68vh the tint stopped mid-screen and read as a cut-off
+       band rather than a section. svh first so mobile URL-bar chrome doesn't
+       push the fold off-screen; vh is the fallback for browsers without it. */
     min-height: 100vh;
-    padding: 1rem 0.5rem;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 1.5rem 7rem;
+    overflow: hidden;
+    text-align: center;
   }
-}
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(124, 152, 133, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 70% 80%, rgba(240, 230, 239, 0.2) 0%, transparent 50%),
-              linear-gradient(45deg, rgba(124, 152, 133, 0.05) 0%, transparent 100%);
-  z-index: -1;
-}
-
-.floating-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.game-element {
-  position: absolute;
-  font-size: 2rem;
-  opacity: 0.3;
-  animation: float 6s ease-in-out infinite;
-}
-
-.element-1 {
-  top: 20%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.element-2 {
-  top: 60%;
-  right: 15%;
-  animation-delay: 1s;
-}
-
-.element-3 {
-  top: 30%;
-  right: 25%;
-  animation-delay: 2s;
-}
-
-.element-4 {
-  bottom: 30%;
-  left: 20%;
-  animation-delay: 3s;
-}
-
-.element-5 {
-  top: 70%;
-  left: 70%;
-  animation-delay: 4s;
-}
-
-@media (max-width: 768px) {
-  .element-1 {
-    top: 15%;
-    left: 5%;
+  /* Layer order matters: the white wash is listed first so it paints OVER the
+     colour accents, dissolving the hero into the white games section instead of
+     butting against it with a hard horizontal line. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(255, 255, 255, 0) 62%, #fff 100%),
+      radial-gradient(circle at 30% 22%, rgba(124, 152, 133, 0.20) 0%, transparent 55%),
+      radial-gradient(circle at 74% 72%, rgba(184, 169, 201, 0.24) 0%, transparent 55%);
+    z-index: 0;
   }
-  
-  .element-2 {
-    top: 75%;
-    right: 5%;
-  }
-  
-  .element-3 {
-    top: 25%;
-    right: 10%;
-  }
-  
-  .element-4 {
-    bottom: 20%;
-    left: 10%;
-  }
-  
-  .element-5 {
-    top: 85%;
-    left: 60%;
-  }
-}
 
-@media (max-width: 480px) {
   .floating-elements {
-    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
   }
-}
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(5deg);
-  }
-}
-
-.hero-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 2;
-  position: relative;
-}
-
-.brand {
-  text-align: center;
-}
-
-.brand h1 {
-  font-size: 5rem;
-  margin: 0 0 1rem 0;
-  letter-spacing: 3px;
-  font-weight: 200;
-  line-height: 0.9;
-  animation: fadeIn 2s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.tagline {
-  font-size: 1.4rem;
-  margin: 0 0 2rem 0;
-  opacity: 0.7;
-  font-weight: 300;
-}
-
-.brewing-message {
-  font-size: 1.8rem;
-  margin: 0;
-  color: #7c9885;
-  font-weight: 400;
-  font-style: italic;
-  opacity: 0.9;
-  animation: pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.9;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-
-
-
-
-
-
-@media (max-width: 768px) {
-  .brand h1 {
-    font-size: 3.2rem;
-    letter-spacing: 2px;
-    margin-bottom: 1.5rem;
-  }
-  
-  .tagline {
-    font-size: 1.2rem;
-    margin-bottom: 2.5rem;
-  }
-  
-  .brewing-message {
-    font-size: 1.5rem;
-  }
-  
   .game-element {
-    font-size: 1.5rem;
-    opacity: 0.2;
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.28;
+    animation: float 6s ease-in-out infinite;
   }
-}
 
-@media (max-width: 480px) {
-  .hero {
-    padding: 1rem 0.5rem;
+  .element-1 { top: 18%; left: 11%; animation-delay: 0s; }
+  .element-2 { top: 62%; right: 14%; animation-delay: 1s; }
+  .element-3 { top: 26%; right: 22%; animation-delay: 2s; }
+  .element-4 { bottom: 24%; left: 19%; animation-delay: 3s; }
+  .element-5 { top: 72%; left: 68%; animation-delay: 4s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
   }
-  
-  .brand h1 {
-    font-size: 2.5rem;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 46rem;
   }
-  
-  .tagline {
+
+  .hero h1 {
+    font-size: 5rem;
+    margin: 0 0 0.75rem;
+    letter-spacing: 3px;
+    font-weight: 200;
+    line-height: 0.95;
+    animation: fadeIn 1.2s ease-in;
+  }
+
+  .hero .tagline {
+    font-size: 1.35rem;
+    margin: 0 0 1.75rem;
+    opacity: 0.7;
+    font-weight: 300;
+  }
+
+  .intro {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: #5f5f5f;
+    margin: 0 auto 2.25rem;
+    max-width: 34rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 0.85rem 2.1rem;
+    border-radius: 999px;
+    background: #7c9885;
+    color: #fff;
+    text-decoration: none;
     font-size: 1rem;
-    margin-bottom: 2rem;
+    letter-spacing: 0.4px;
+    box-shadow: 0 8px 20px rgba(124, 152, 133, 0.35);
+    transition: transform 0.25s ease, background 0.25s ease;
   }
-  
-  .brewing-message {
-    font-size: 1.2rem;
+
+  .hero-cta:hover {
+    background: #6b8674;
+    transform: translateY(-2px);
   }
-}
+
+  .hero-cta:focus-visible {
+    outline: 2px solid #4a4a4a;
+    outline-offset: 3px;
+  }
+
+  /* ---- Games --------------------------------------------------------- */
+  /* White ground: the official store badges are black and may not be restyled,
+     so they need a clean surface rather than the tinted body gradient. */
+  /* Starts on the exact white the hero fades into, then releases back to the
+     body tint so the footer isn't a second hard edge. */
+  .games {
+    background: linear-gradient(to bottom, #fff 0%, #fff 88%, rgba(255, 255, 255, 0) 100%);
+    padding: 1rem 1.5rem 4rem;
+  }
+
+  .games-head {
+    text-align: center;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .games-head h2 {
+    font-size: 2.4rem;
+    font-weight: 200;
+    letter-spacing: 2px;
+    margin: 0 0 0.6rem;
+    color: #4a4a4a;
+  }
+
+  .games-head p {
+    margin: 0;
+    color: #7c7c7c;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 5rem 1rem 6rem;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      letter-spacing: 2px;
+    }
+
+    .hero .tagline {
+      font-size: 1.1rem;
+    }
+
+    .game-element {
+      font-size: 1.5rem;
+      opacity: 0.2;
+    }
+
+    .games {
+      padding: 1rem 1.25rem 3rem;
+    }
+
+    .games-head h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .floating-elements {
+      display: none;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .game-element,
+    .hero h1 {
+      animation: none;
+    }
+
+    .hero-cta {
+      transition: none;
+    }
+  }
 </style>

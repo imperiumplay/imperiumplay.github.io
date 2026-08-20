@@ -12,6 +12,12 @@ export interface Props {
 }
 
 const { title, description, keywords, ogUrl, canonicalUrl, appId, structuredData } = Astro.props;
+
+// Default both to this page's own URL. Hand-set canonicals covered 4 of 13 pages
+// and the ones that existed pointed at the no-slash form, which 301s.
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const canonical = canonicalUrl ?? pageUrl;
+const ogPageUrl = ogUrl ?? pageUrl;
 ---
 
 <!DOCTYPE html>
@@ -27,15 +33,18 @@ const { title, description, keywords, ogUrl, canonicalUrl, appId, structuredData
   <meta property="og:type" content="website">
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  {ogUrl && <meta property="og:url" content={ogUrl}>}
+  <meta property="og:url" content={ogPageUrl}>
   <meta name="twitter:card" content="summary">
   
   {appId?.ios && <meta name="apple-itunes-app" content={`app-id=${appId.ios}`}>}
   {appId?.android && <meta name="google-play-app" content={`app-id=${appId.android}`}>}
   
+  <!-- Tab icon is a crop of the Sum Rush "10" bubble; the whole app icon is
+       eight bubbles and turns to mush at 16px. The home-screen icon uses the
+       full artwork so a saved shortcut matches the actual app. -->
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="apple-touch-icon" href="/favicon.png">
-  {canonicalUrl && <link rel="canonical" href={canonicalUrl}>}
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="canonical" href={canonical}>
   
   {structuredData && structuredData.map(data => (
     <script type="application/ld+json" set:html={JSON.stringify(data)} />

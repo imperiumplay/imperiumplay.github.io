@@ -1,0 +1,95 @@
+---
+// Official Apple/Google badges. Their brand guidelines require the artwork be
+// used unmodified, so these keep their own black — which is why every surface
+// that shows them sits on white or near-white.
+export interface Props {
+  ios: string;
+  android: string;
+  game: string;
+  align?: 'center' | 'start';
+}
+
+const { ios, android, game, align = 'center' } = Astro.props;
+---
+
+<div class="store-badges" data-align={align}>
+  <a href={ios} target="_blank" rel="noopener" aria-label={`Download ${game} on the App Store`}>
+    <img
+      src="/images/badges/app-store-badge.svg"
+      alt="Download on the App Store"
+      class="badge ios"
+      width="135"
+      height="40"
+      loading="lazy"
+    >
+  </a>
+  <a href={android} target="_blank" rel="noopener" aria-label={`Get ${game} on Google Play`}>
+    <img
+      src="/images/badges/google-play-badge.png"
+      alt="Get it on Google Play"
+      class="badge play"
+      width="202"
+      height="60"
+      loading="lazy"
+    >
+  </a>
+</div>
+
+<style>
+  .store-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .store-badges[data-align='center'] {
+    justify-content: center;
+  }
+
+  .store-badges[data-align='start'] {
+    justify-content: flex-start;
+  }
+
+  .store-badges a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+
+  .store-badges a:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+  }
+
+  .store-badges a:focus-visible {
+    outline: 2px solid #7c9885;
+    outline-offset: 3px;
+  }
+
+  .badge {
+    display: block;
+    width: auto;
+  }
+
+  /* The Play badge ships with ~10px of transparent padding baked in, so it needs
+     the taller box to end up optically the same size as the App Store badge. */
+  .badge.ios {
+    height: 40px;
+  }
+
+  .badge.play {
+    height: 60px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .store-badges a {
+      transition: none;
+    }
+    .store-badges a:hover {
+      transform: none;
+    }
+  }
+</style>

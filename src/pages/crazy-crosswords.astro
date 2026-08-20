@@ -4,9 +4,9 @@ import Footer from '../components/Footer.astro';
 
 const footerLinks = [
   { href: "/", text: "Home" },
-  { href: "/how-to-play/crazy-crosswords", text: "How to Play" },
-  { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/terms", text: "Terms & Conditions" }
+  { href: "/how-to-play/crazy-crosswords/", text: "How to Play" },
+  { href: "/privacy-policy/", text: "Privacy Policy" },
+  { href: "/terms/", text: "Terms & Conditions" }
 ];
 
 // FAQ data
@@ -113,7 +113,6 @@ const features = [
 <BaseLayout 
   title="Crazy Crosswords - Word Puzzle Game by ImperiumPlay"
   description="Challenge your vocabulary in Crazy Crosswords. Arrange letters to create valid words in rows and columns. Available on iOS and Android."
-  ogUrl="https://imperiumplay.com/crazy-crosswords"
 >
   <main>
     <!-- Hero Section -->
@@ -151,6 +150,9 @@ const features = [
               </button>
             </div>
           </div>
+          <p class="video-caption">
+            <a href="/watch/crazy-crosswords-gameplay/">Watch the full Crazy Crosswords gameplay video</a>
+          </p>
         </div>
       </div>
     </section>
@@ -177,16 +179,16 @@ const features = [
         <h2>Game Screenshots</h2>
         <div class="screenshot-gallery">
           <div class="screenshot">
-            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 0.png" alt="Gameplay Screenshot" class="screenshot-img">
+            <img src="/images/crazy-crosswords/screens/01.png" alt="Gameplay Screenshot" class="screenshot-img">
           </div>
           <div class="screenshot">
-            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 1.png" alt="Word Quest Mode" class="screenshot-img">
+            <img src="/images/crazy-crosswords/screens/02.png" alt="Word Quest Mode" class="screenshot-img">
           </div>
           <div class="screenshot">
-            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 2.png" alt="Daily Challenge" class="screenshot-img">
+            <img src="/images/crazy-crosswords/screens/03.png" alt="Daily Challenge" class="screenshot-img">
           </div>
           <div class="screenshot">
-            <img src="/images/crazy-crosswords/AppMockUp Screenshots/Apple iPhone 11 Pro Max (1242x2688)/Apple iPhone 11 Pro Max Screenshot 3.png" alt="Game Menu" class="screenshot-img">
+            <img src="/images/crazy-crosswords/screens/04.png" alt="Game Menu" class="screenshot-img">
           </div>
         </div>
       </div>
@@ -305,6 +307,16 @@ const features = [
     color: #666;
   }
   
+  .video-caption {
+    text-align: center;
+    margin: 1rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .video-caption a {
+    color: #7c9885;
+  }
+
   .video-container {
     max-width: 400px;
     width: 100%;
