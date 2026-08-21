@@ -9,9 +9,10 @@ export interface Props {
   canonicalUrl?: string;
   appId?: { ios?: string; android?: string };
   structuredData?: any[];
+  noindex?: boolean;
 }
 
-const { title, description, keywords, ogUrl, canonicalUrl, appId, structuredData } = Astro.props;
+const { title, description, keywords, ogUrl, canonicalUrl, appId, structuredData, noindex } = Astro.props;
 
 // Default both to this page's own URL. Hand-set canonicals covered 4 of 13 pages
 // and the ones that existed pointed at the no-slash form, which 301s.
@@ -29,6 +30,7 @@ const ogPageUrl = ogUrl ?? pageUrl;
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>{title}</title>
   <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex, follow">}
   {keywords && <meta name="keywords" content={keywords}>}
   <meta property="og:type" content="website">
   <meta property="og:title" content={title}>
