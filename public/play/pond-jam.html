@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Pond Jam — Prototype</title>
+<style>
+  :root { --ink:#16302a; --panel:rgba(255,255,255,.85); }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; height:100%; background:#2c8fb8; font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; overflow:hidden; user-select:none; -webkit-user-select:none; touch-action:manipulation; }
+  #app { position:fixed; inset:0; max-width:560px; margin:0 auto; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  .top { position:absolute; left:0; right:0; top:0; display:flex; align-items:center; gap:6px; padding:10px; padding-top:max(10px,env(safe-area-inset-top)); z-index:2; }
+  .lvl { font-weight:900; font-size:19px; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.2); white-space:nowrap; }
+  .sp { flex:1; }
+  .pill { background:var(--panel); color:var(--ink); border-radius:16px; padding:6px 10px; font-weight:800; font-size:13px; white-space:nowrap; }
+  .btn { background:var(--panel); border:0; color:var(--ink); height:34px; padding:0 10px; border-radius:11px; font-weight:800; font-size:14px; cursor:pointer; }
+  .bottom { position:absolute; left:0; right:0; bottom:0; padding:12px 16px; padding-bottom:max(14px,env(safe-area-inset-bottom)); z-index:2; color:#fff; font-size:13px; font-weight:700; text-align:center; text-shadow:0 1px 2px rgba(0,0,0,.35); line-height:1.45; }
+  .ov { position:absolute; inset:0; z-index:5; display:none; align-items:center; justify-content:center; background:rgba(8,30,40,.55); }
+  .ov.show { display:flex; }
+  .card { background:#fffdf6; color:#1d2a26; width:min(88%,360px); border-radius:22px; padding:22px 20px 18px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.35); }
+  .card h2 { margin:0 0 6px; font-size:25px; }
+  .card p { margin:6px 0; color:#4b5a55; font-size:15px; }
+  .big { font-size:44px; margin:4px 0; }
+  .pbtn { display:block; width:100%; border:0; border-radius:14px; padding:14px; font-size:17px; font-weight:800; margin-top:12px; cursor:pointer; background:#2fb36b; color:#fff; box-shadow:inset 0 -3px 0 rgba(0,0,0,.18); }
+  .menu { max-height:80vh; overflow:auto; text-align:left; }
+  .row { display:flex; gap:10px; align-items:center; padding:9px 6px; border-bottom:1px solid #ece6d6; cursor:pointer; font-size:14px; }
+  .row b { width:30px; }
+  .row span:last-child { margin-left:auto; color:#7a857f; font-size:12px; }
+  .toast { position:absolute; left:50%; top:64px; transform:translateX(-50%); background:rgba(10,30,35,.9); color:#fff; padding:8px 14px; border-radius:12px; font-size:14px; font-weight:700; z-index:4; opacity:0; transition:opacity .2s; pointer-events:none; white-space:nowrap; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="cv"></canvas>
+  <div class="top">
+    <span class="lvl" id="lvl">Level 1</span>
+    <span class="pill" id="drank">💧 0/0</span>
+    <span class="pill" id="spare">0 moves</span>
+    <span class="sp"></span>
+    <button class="btn" id="hintB">Hint</button>
+    <button class="btn" id="retryB">↻</button>
+    <button class="btn" id="menuB">≡</button>
+  </div>
+  <div class="bottom" id="rules"></div>
+  <div class="toast" id="toast"></div>
+  <div class="ov" id="winOv"><div class="card"><div class="big">💧</div><h2 id="winT">Everyone drank!</h2><p id="winP"></p><button class="pbtn" id="nextB">Next</button></div></div>
+  <div class="ov" id="failOv"><div class="card"><div class="big" id="failE">😱</div><h2 id="failT">Scared off!</h2><p id="failP"></p><button class="pbtn" id="failB">Try again</button></div></div>
+  <div class="ov" id="menuOv"><div class="card menu"><h2 style="text-align:center">Levels</h2>
+    <p style="text-align:center;font-size:13px">Every level is proven solvable and needs at least one animal to walk partway and stop. Gated = moves that are only safe after a predator has gone.</p>
+    <div id="lvList"></div><button class="pbtn" id="closeM">Close</button></div></div>
+</div>
+<script>
+// Pond Jam v4 — jam rules with stopping. No DOM.
+// Tap: walk forward. Clear to the shore -> drink. Blocked -> stop on the cell before the obstacle
+// (no room at all = bump, nothing happens). If the animal stops next to an enemy (prey beside predator) -> game over.
+(function (root) {
+  const D = { N: [0, -1], S: [0, 1], E: [1, 0], W: [-1, 0] };
+  const DK = ['N', 'E', 'S', 'W'];
+  function newSim(L) { return { L, pos: L.animals.map((a) => a.cell), left: L.animals.length, won: false, lost: false, taps: 0 }; }
+  function clone(s) { return { L: s.L, pos: s.pos.slice(), left: s.left, won: s.won, lost: s.lost, taps: s.taps }; }
+  function grid(s) { const g = new Int16Array(s.L.n * s.L.n).fill(-1); for (const r of s.L.rocks) g[r] = -2; s.pos.forEach((p, i) => { if (p >= 0) g[p] = i; }); return g; }
+  function nb(n, c) { const x = c % n, y = (c / n) | 0, o = []; if (x > 0) o.push(c - 1); if (x < n - 1) o.push(c + 1); if (y > 0) o.push(c - n); if (y < n - 1) o.push(c + n); return o; }
+  // {type:'bump'|'drink'|'stop', from, to, steps, enemy: id of the animal it clashes with (stop only)}
+  function preview(s, id, g) {
+    const L = s.L, n = L.n, a = L.animals[id]; g = g || grid(s);
+    const p = s.pos[id]; if (p < 0) return null;
+    const [dx, dy] = D[a.dir]; let x = p % n, y = (p / n) | 0, steps = 0;
+    for (;;) {
+      const nx = x + dx, ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= n || ny >= n) return { type: 'drink', from: p, to: -1, steps: steps + 1 };
+      if (g[ny * n + nx] !== -1) break;
+      x = nx; y = ny; steps++;
+    }
+    if (!steps) return { type: 'bump', from: p, to: p, steps: 0 };
+    const to = y * n + x; let enemy = -1;
+    for (const q of nb(n, to)) { const o = g[q]; if (o >= 0 && o !== id && L.animals[o].pred !== a.pred) { enemy = o; break; } }
+    return { type: 'stop', from: p, to, steps, enemy };
+  }
+  function tap(s, id) {
+    if (s.won || s.lost) return null;
+    const r = preview(s, id); if (!r || r.type === 'bump') return r;
+    s.taps++;
+    if (r.type === 'drink') { s.pos[id] = -1; s.left--; } else { s.pos[id] = r.to; if (r.enemy >= 0) s.lost = true; }
+    if (!s.lost && s.left === 0) s.won = true;
+    return r;
+  }
+  function solve(L, start, opts) {
+    opts = opts || {}; const budget = opts.budget || 2e5, slideCap = opts.slideCap ?? 1e9;
+    const dead = new Set(); let nodes = 0; const path = [];
+    const s0 = clone(start || newSim(L));
+    function dfs(s, sl) {
+      if (s.left === 0) return true;
+      const k = s.pos.join(',') + '|' + sl; if (dead.has(k)) return false;
+      if (++nodes > budget) throw 0;
+      const g = grid(s), mv = [];
+      for (let i = 0; i < s.pos.length; i++) {
+        if (s.pos[i] < 0) continue; const r = preview(s, i, g);
+        if (r.type === 'bump' || (r.type === 'stop' && (r.enemy >= 0 || sl >= slideCap))) continue;
+        mv.push([i, r.type === 'drink' ? 0 : 1]);
+      }
+      mv.sort((a, b) => a[1] - b[1]);
+      for (const [i, st] of mv) { const s2 = clone(s); tap(s2, i); path.push(i); if (dfs(s2, sl + st)) return true; path.pop(); }
+      dead.add(k); return false;
+    }
+    try { const ok = dfs(s0, 0); return { ok, path: ok ? path.slice() : null, nodes }; } catch (e) { return { ok: null, path: null, nodes }; }
+  }
+  function minSlides(L, budget) { for (let k = 0; k <= 12; k++) { const r = solve(L, null, { slideCap: k, budget }); if (r.ok === null) return null; if (r.ok) return k; } return 13; }
+  function rng(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  // Reverse play from an empty meadow. un-drink: an animal appears facing a shore it can walk to.
+  // un-slide: an animal whose next cell is blocked backs up (forward, it stops right there).
+  // The board never has enemies side by side. Gating: new predators prefer cells next to a prey's
+  // future stop cell (and vice versa), so that predator must leave before the prey's slide.
+  function generate(spec, seed) {
+    const r = rng(seed), n = spec.n, N = n * n, pool = [];
+    for (let t = 0; t < (spec.tries || 400) && pool.length < (spec.pool || 8); t++) {
+      const occ = new Int16Array(N).fill(-1);
+      const cells = [...Array(N).keys()];
+      for (let i = N - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [cells[i], cells[j]] = [cells[j], cells[i]]; }
+      const rocks = [];
+      for (const c of cells) { if (rocks.length >= spec.rocks) break; const x = c % n, y = (c / n) | 0; if (x > 0 && y > 0 && x < n - 1 && y < n - 1) { rocks.push(c); occ[c] = -2; } }
+      const kinds = []; for (let i = 0; i < spec.animals; i++) kinds.push(i < spec.pred);
+      for (let i = kinds.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [kinds[i], kinds[j]] = [kinds[j], kinds[i]]; }
+      const an = [], fwd = [], stopCells = []; // stopCells: {c, pred} future stops recorded so far
+      const walk = (c, dir) => { const o = new Set(), [dx, dy] = D[dir]; let x = c % n + dx, y = ((c / n) | 0) + dy; while (x >= 0 && y >= 0 && x < n && y < n) { o.add(y * n + x); x += dx; y += dy; } return o; };
+      const safeAt = (c, pred, self) => nb(n, c).every((q) => occ[q] < 0 || occ[q] === self || an[occ[q]].pred === pred);
+      let placed = 0, guard = 0;
+      while (placed < spec.animals && guard++ < spec.animals * 14) {
+        if (an.length >= 2 && r() < (spec.pSlide ?? 0.55)) {
+          const opts = [];
+          for (let i = 0; i < an.length; i++) {
+            const a = an[i]; if (a.cell < 0) continue;
+            const [dx, dy] = D[a.dir], x = a.cell % n, y = (a.cell / n) | 0;
+            const fx = x + dx, fy = y + dy;
+            if (fx < 0 || fy < 0 || fx >= n || fy >= n || occ[fy * n + fx] === -1) continue;
+            let px = x - dx, py = y - dy;
+            while (px >= 0 && py >= 0 && px < n && py < n && occ[py * n + px] === -1) {
+              const pc = py * n + px;
+              if (safeAt(pc, a.pred, i)) { let sc = 0; for (let j = 0; j < an.length; j++) if (j !== i && an[j].walk.has(pc)) sc++; opts.push({ i, pc, sc }); }
+              px -= dx; py -= dy;
+            }
+          }
+          if (opts.length) {
+            let tot = 0; const w = opts.map((o) => { const v = (1 + o.sc * 2) * (0.5 + r()); tot += v; return v; });
+            let pk = r() * tot, q = 0; while (q < w.length - 1 && pk > w[q]) { pk -= w[q]; q++; }
+            const o = opts[q], a = an[o.i];
+            stopCells.push({ c: a.cell, pred: a.pred });
+            occ[a.cell] = -1; a.cell = o.pc; occ[o.pc] = o.i; a.walk = walk(a.cell, a.dir);
+            fwd.push(o.i); continue;
+          }
+        }
+        const pred = kinds[placed], cands = [];
+        for (let c = 0; c < N; c++) {
+          if (occ[c] !== -1 || !safeAt(c, pred, -9)) continue;
+          for (const dir of DK) {
+            const [dx, dy] = D[dir]; let qx = c % n + dx, qy = ((c / n) | 0) + dy, clear = true;
+            while (qx >= 0 && qy >= 0 && qx < n && qy < n) { if (occ[qy * n + qx] !== -1) { clear = false; break; } qx += dx; qy += dy; }
+            if (!clear) continue;
+            let sc = 0; for (const b of an) if (b.cell >= 0 && b.walk.has(c)) sc++;
+            let gate = 0; for (const sc2 of stopCells) if (sc2.pred !== pred && nb(n, sc2.c).includes(c)) gate++;
+            cands.push({ c, dir, sc: sc + gate * (spec.gateW || 3), gate });
+          }
+        }
+        if (!cands.length) break;
+        let tot = 0; const w = cands.map((q) => { const v = Math.pow(1 + q.sc, spec.bias || 2.5) * (0.4 + r()); tot += v; return v; });
+        let pk = r() * tot, q = 0; while (q < w.length - 1 && pk > w[q]) { pk -= w[q]; q++; }
+        const ch = cands[q]; occ[ch.c] = an.length;
+        an.push({ cell: ch.c, dir: ch.dir, pred, walk: walk(ch.c, ch.dir) });
+        fwd.push(an.length - 1); placed++;
+      }
+      if (placed < spec.animals) continue;
+      const animals = an.map((a, i) => ({ id: i, cell: a.cell, dir: a.dir, pred: a.pred, sp: 0 }));
+      let pi = 0, qi = 0; for (const a of animals) a.sp = a.pred ? pi++ % 4 : qi++ % 5;
+      const L = { n, rocks, animals };
+      const plan = fwd.slice().reverse();
+      const s = newSim(L); let ok = true;
+      for (const m of plan) { const p = tap(s, m); if (!p || p.type === 'bump' || s.lost) { ok = false; break; } }
+      if (!ok || !s.won) continue;
+      const ms = minSlides(L, 40000);
+      if (ms === null || ms < (spec.minSlides || 0)) continue;
+      // gated slides: on the plan, prey/predator slides whose stop cell was next to an enemy at the start
+      const s0 = newSim(L), g0 = grid(s0); let gated = 0, fatalStart = 0;
+      const s1 = newSim(L);
+      for (const m of plan) { const pr = preview(s1, m); if (pr.type === 'stop' && nb(n, pr.to).some((q) => g0[q] >= 0 && L.animals[g0[q]].pred !== L.animals[m].pred && q !== s0.pos[m])) gated++; tap(s1, m); }
+      for (let i = 0; i < animals.length; i++) { const pr = preview(s0, i, g0); if (pr.type === 'stop' && pr.enemy >= 0) fatalStart++; }
+      L.plan = plan; L.stats = { minSlides: ms, gated, fatalStart, moves: plan.length };
+      pool.push(L);
+    }
+    return pool;
+  }
+  const api = { D, nb, newSim, clone, grid, preview, tap, solve, minSlides, generate };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.POND = api;
+})(this);
+
+</script>
+<script>
+const LEVELS = [{"n":4,"rocks":[],"animals":[{"id":0,"cell":4,"dir":"W","pred":false,"sp":0},{"id":1,"cell":2,"dir":"W","pred":false,"sp":1},{"id":2,"cell":1,"dir":"W","pred":false,"sp":2},{"id":3,"cell":11,"dir":"E","pred":false,"sp":3}],"plan":[3,2,1,0],"stats":{"minSlides":0,"gated":0,"fatalStart":0,"moves":4,"fatal":0,"fatalStates":0},"id":1},{"n":4,"rocks":[],"animals":[{"id":0,"cell":2,"dir":"S","pred":false,"sp":0},{"id":1,"cell":14,"dir":"W","pred":false,"sp":1},{"id":2,"cell":12,"dir":"N","pred":false,"sp":2},{"id":3,"cell":0,"dir":"E","pred":false,"sp":3},{"id":4,"cell":9,"dir":"W","pred":true,"sp":0}],"plan":[4,0,3,1,2,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":2,"moves":7,"fatal":2,"fatalStates":1},"id":2},{"n":5,"rocks":[],"animals":[{"id":0,"cell":12,"dir":"W","pred":false,"sp":0},{"id":1,"cell":10,"dir":"N","pred":false,"sp":1},{"id":2,"cell":8,"dir":"S","pred":false,"sp":2},{"id":3,"cell":2,"dir":"S","pred":false,"sp":3},{"id":4,"cell":0,"dir":"E","pred":false,"sp":4},{"id":5,"cell":18,"dir":"S","pred":true,"sp":0},{"id":6,"cell":6,"dir":"S","pred":true,"sp":1}],"plan":[6,3,5,4,0,3,2,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":5,"moves":9,"fatal":7,"fatalStates":3},"id":3},{"n":5,"rocks":[16],"animals":[{"id":0,"cell":3,"dir":"S","pred":false,"sp":0},{"id":1,"cell":9,"dir":"E","pred":false,"sp":1},{"id":2,"cell":13,"dir":"W","pred":false,"sp":2},{"id":3,"cell":24,"dir":"E","pred":false,"sp":3},{"id":4,"cell":10,"dir":"N","pred":false,"sp":4},{"id":5,"cell":0,"dir":"E","pred":true,"sp":0},{"id":6,"cell":7,"dir":"N","pred":true,"sp":1},{"id":7,"cell":17,"dir":"S","pred":false,"sp":0}],"plan":[7,6,0,2,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":3,"moves":10,"fatal":10,"fatalStates":5},"id":4},{"n":5,"rocks":[8],"animals":[{"id":0,"cell":18,"dir":"W","pred":true,"sp":0},{"id":1,"cell":0,"dir":"E","pred":false,"sp":0},{"id":2,"cell":22,"dir":"W","pred":false,"sp":1},{"id":3,"cell":4,"dir":"S","pred":true,"sp":1},{"id":4,"cell":10,"dir":"E","pred":false,"sp":2},{"id":5,"cell":24,"dir":"S","pred":false,"sp":3},{"id":6,"cell":20,"dir":"N","pred":false,"sp":4},{"id":7,"cell":2,"dir":"S","pred":false,"sp":0},{"id":8,"cell":12,"dir":"S","pred":false,"sp":1},{"id":9,"cell":16,"dir":"W","pred":true,"sp":2}],"plan":[9,2,6,4,8,1,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":3,"fatalStart":6,"moves":14,"fatal":24,"fatalStates":11},"id":5},{"n":5,"rocks":[18],"animals":[{"id":0,"cell":8,"dir":"N","pred":false,"sp":0},{"id":1,"cell":20,"dir":"N","pred":false,"sp":1},{"id":2,"cell":24,"dir":"W","pred":false,"sp":2},{"id":3,"cell":10,"dir":"W","pred":false,"sp":3},{"id":4,"cell":0,"dir":"E","pred":false,"sp":4},{"id":5,"cell":4,"dir":"S","pred":false,"sp":0},{"id":6,"cell":2,"dir":"N","pred":true,"sp":0},{"id":7,"cell":16,"dir":"N","pred":true,"sp":1},{"id":8,"cell":22,"dir":"S","pred":true,"sp":2},{"id":9,"cell":14,"dir":"E","pred":false,"sp":1},{"id":10,"cell":6,"dir":"W","pred":false,"sp":2}],"plan":[10,9,8,7,2,1,6,4,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":3,"fatalStart":4,"moves":14,"fatal":16,"fatalStates":7},"id":6},{"n":6,"rocks":[15],"animals":[{"id":0,"cell":4,"dir":"S","pred":false,"sp":0},{"id":1,"cell":28,"dir":"W","pred":true,"sp":0},{"id":2,"cell":24,"dir":"W","pred":false,"sp":1},{"id":3,"cell":20,"dir":"W","pred":true,"sp":1},{"id":4,"cell":25,"dir":"N","pred":false,"sp":2},{"id":5,"cell":1,"dir":"E","pred":false,"sp":3},{"id":6,"cell":16,"dir":"E","pred":false,"sp":4},{"id":7,"cell":5,"dir":"S","pred":false,"sp":0},{"id":8,"cell":9,"dir":"N","pred":true,"sp":2},{"id":9,"cell":29,"dir":"E","pred":true,"sp":3},{"id":10,"cell":6,"dir":"W","pred":false,"sp":1},{"id":11,"cell":13,"dir":"W","pred":false,"sp":2},{"id":12,"cell":17,"dir":"E","pred":false,"sp":3}],"plan":[12,11,10,9,8,0,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":4,"moves":14,"fatal":32,"fatalStates":13},"id":7},{"n":6,"rocks":[21,27],"animals":[{"id":0,"cell":17,"dir":"W","pred":false,"sp":0},{"id":1,"cell":0,"dir":"E","pred":false,"sp":1},{"id":2,"cell":30,"dir":"W","pred":true,"sp":0},{"id":3,"cell":5,"dir":"S","pred":false,"sp":2},{"id":4,"cell":20,"dir":"N","pred":true,"sp":1},{"id":5,"cell":32,"dir":"E","pred":false,"sp":3},{"id":6,"cell":25,"dir":"S","pred":false,"sp":4},{"id":7,"cell":12,"dir":"N","pred":true,"sp":2},{"id":8,"cell":8,"dir":"N","pred":true,"sp":3},{"id":9,"cell":15,"dir":"N","pred":false,"sp":0},{"id":10,"cell":35,"dir":"S","pred":false,"sp":1},{"id":11,"cell":22,"dir":"E","pred":false,"sp":2},{"id":12,"cell":11,"dir":"E","pred":false,"sp":3},{"id":13,"cell":3,"dir":"N","pred":false,"sp":4}],"plan":[13,1,12,3,11,0,10,9,4,8,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":4,"moves":18,"fatal":18,"fatalStates":14},"id":8},{"n":6,"rocks":[21,27],"animals":[{"id":0,"cell":35,"dir":"W","pred":false,"sp":0},{"id":1,"cell":2,"dir":"S","pred":false,"sp":1},{"id":2,"cell":30,"dir":"N","pred":false,"sp":2},{"id":3,"cell":32,"dir":"S","pred":false,"sp":3},{"id":4,"cell":18,"dir":"N","pred":true,"sp":0},{"id":5,"cell":0,"dir":"E","pred":true,"sp":1},{"id":6,"cell":14,"dir":"E","pred":false,"sp":4},{"id":7,"cell":3,"dir":"E","pred":false,"sp":0},{"id":8,"cell":16,"dir":"N","pred":true,"sp":2},{"id":9,"cell":17,"dir":"S","pred":true,"sp":3},{"id":10,"cell":7,"dir":"N","pred":false,"sp":1},{"id":11,"cell":26,"dir":"W","pred":false,"sp":2},{"id":12,"cell":4,"dir":"E","pred":false,"sp":3},{"id":13,"cell":33,"dir":"S","pred":false,"sp":4},{"id":14,"cell":12,"dir":"W","pred":true,"sp":0}],"plan":[14,0,13,12,11,10,9,4,8,7,1,6,5,4,0,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":5,"moves":19,"fatal":45,"fatalStates":14},"id":9},{"n":6,"rocks":[26,19,13],"animals":[{"id":0,"cell":4,"dir":"S","pred":false,"sp":0},{"id":1,"cell":34,"dir":"W","pred":false,"sp":1},{"id":2,"cell":15,"dir":"N","pred":false,"sp":2},{"id":3,"cell":32,"dir":"W","pred":false,"sp":3},{"id":4,"cell":27,"dir":"E","pred":true,"sp":0},{"id":5,"cell":30,"dir":"N","pred":false,"sp":4},{"id":6,"cell":29,"dir":"S","pred":false,"sp":0},{"id":7,"cell":0,"dir":"E","pred":true,"sp":1},{"id":8,"cell":16,"dir":"E","pred":false,"sp":1},{"id":9,"cell":5,"dir":"N","pred":false,"sp":2},{"id":10,"cell":12,"dir":"W","pred":true,"sp":2},{"id":11,"cell":9,"dir":"N","pred":false,"sp":3},{"id":12,"cell":23,"dir":"E","pred":false,"sp":4},{"id":13,"cell":25,"dir":"S","pred":true,"sp":3}],"plan":[13,12,11,10,9,0,8,7,6,3,5,4,3,2,0,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":5,"moves":17,"fatal":39,"fatalStates":12},"id":10},{"n":6,"rocks":[13,16],"animals":[{"id":0,"cell":7,"dir":"E","pred":false,"sp":0},{"id":1,"cell":35,"dir":"N","pred":false,"sp":1},{"id":2,"cell":12,"dir":"S","pred":false,"sp":2},{"id":3,"cell":23,"dir":"N","pred":false,"sp":3},{"id":4,"cell":31,"dir":"S","pred":false,"sp":4},{"id":5,"cell":20,"dir":"E","pred":false,"sp":0},{"id":6,"cell":24,"dir":"W","pred":true,"sp":0},{"id":7,"cell":5,"dir":"W","pred":false,"sp":1},{"id":8,"cell":11,"dir":"E","pred":false,"sp":2},{"id":9,"cell":10,"dir":"N","pred":false,"sp":3},{"id":10,"cell":2,"dir":"S","pred":true,"sp":1},{"id":11,"cell":22,"dir":"S","pred":false,"sp":4},{"id":12,"cell":15,"dir":"S","pred":true,"sp":2},{"id":13,"cell":27,"dir":"E","pred":true,"sp":3},{"id":14,"cell":0,"dir":"N","pred":false,"sp":0},{"id":15,"cell":33,"dir":"S","pred":true,"sp":0}],"plan":[15,14,13,12,5,11,0,10,9,8,3,7,6,5,4,0,3,2,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":6,"moves":20,"fatal":37,"fatalStates":13},"id":11},{"n":6,"rocks":[10,27],"animals":[{"id":0,"cell":22,"dir":"S","pred":false,"sp":0},{"id":1,"cell":5,"dir":"W","pred":false,"sp":1},{"id":2,"cell":0,"dir":"S","pred":true,"sp":0},{"id":3,"cell":35,"dir":"W","pred":false,"sp":2},{"id":4,"cell":23,"dir":"S","pred":false,"sp":3},{"id":5,"cell":33,"dir":"W","pred":false,"sp":4},{"id":6,"cell":31,"dir":"W","pred":false,"sp":0},{"id":7,"cell":6,"dir":"W","pred":true,"sp":1},{"id":8,"cell":12,"dir":"E","pred":true,"sp":2},{"id":9,"cell":26,"dir":"W","pred":true,"sp":3},{"id":10,"cell":19,"dir":"N","pred":true,"sp":0},{"id":11,"cell":24,"dir":"W","pred":true,"sp":1},{"id":12,"cell":34,"dir":"S","pred":false,"sp":1},{"id":13,"cell":15,"dir":"E","pred":false,"sp":2},{"id":14,"cell":17,"dir":"N","pred":false,"sp":3},{"id":15,"cell":2,"dir":"N","pred":false,"sp":4},{"id":16,"cell":28,"dir":"E","pred":false,"sp":0}],"plan":[16,1,15,14,13,12,11,10,3,9,8,5,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":3,"moves":20,"fatal":37,"fatalStates":18},"id":12},{"n":6,"rocks":[25,10,13],"animals":[{"id":0,"cell":18,"dir":"E","pred":false,"sp":0},{"id":1,"cell":22,"dir":"E","pred":false,"sp":1},{"id":2,"cell":5,"dir":"W","pred":false,"sp":2},{"id":3,"cell":27,"dir":"N","pred":true,"sp":0},{"id":4,"cell":0,"dir":"S","pred":false,"sp":3},{"id":5,"cell":34,"dir":"W","pred":false,"sp":4},{"id":6,"cell":15,"dir":"N","pred":true,"sp":1},{"id":7,"cell":23,"dir":"N","pred":false,"sp":0},{"id":8,"cell":20,"dir":"S","pred":false,"sp":1},{"id":9,"cell":7,"dir":"N","pred":true,"sp":2},{"id":10,"cell":2,"dir":"N","pred":true,"sp":3},{"id":11,"cell":31,"dir":"S","pred":false,"sp":2},{"id":12,"cell":12,"dir":"W","pred":false,"sp":3},{"id":13,"cell":9,"dir":"N","pred":true,"sp":0},{"id":14,"cell":30,"dir":"S","pred":false,"sp":4},{"id":15,"cell":3,"dir":"N","pred":true,"sp":1},{"id":16,"cell":24,"dir":"W","pred":false,"sp":0}],"plan":[16,15,14,13,12,11,10,0,9,2,8,7,6,5,4,3,2,0,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":3,"moves":20,"fatal":32,"fatalStates":16},"id":13},{"n":7,"rocks":[16,10,26],"animals":[{"id":0,"cell":13,"dir":"S","pred":false,"sp":0},{"id":1,"cell":42,"dir":"W","pred":true,"sp":0},{"id":2,"cell":41,"dir":"W","pred":true,"sp":1},{"id":3,"cell":35,"dir":"W","pred":true,"sp":2},{"id":4,"cell":38,"dir":"S","pred":false,"sp":1},{"id":5,"cell":33,"dir":"W","pred":false,"sp":2},{"id":6,"cell":25,"dir":"W","pred":true,"sp":3},{"id":7,"cell":44,"dir":"E","pred":false,"sp":3},{"id":8,"cell":46,"dir":"N","pred":false,"sp":4},{"id":9,"cell":14,"dir":"N","pred":false,"sp":0},{"id":10,"cell":23,"dir":"S","pred":true,"sp":0},{"id":11,"cell":31,"dir":"W","pred":false,"sp":1},{"id":12,"cell":29,"dir":"S","pred":false,"sp":2},{"id":13,"cell":21,"dir":"W","pred":false,"sp":3},{"id":14,"cell":0,"dir":"W","pred":false,"sp":4},{"id":15,"cell":8,"dir":"N","pred":true,"sp":1},{"id":16,"cell":4,"dir":"E","pred":false,"sp":0},{"id":17,"cell":17,"dir":"E","pred":false,"sp":1},{"id":18,"cell":27,"dir":"E","pred":false,"sp":2}],"plan":[18,17,16,15,9,14,13,12,11,6,7,10,9,8,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":2,"fatalStart":7,"moves":22,"fatal":88,"fatalStates":20},"id":14},{"n":7,"rocks":[40,33,16],"animals":[{"id":0,"cell":21,"dir":"E","pred":false,"sp":0},{"id":1,"cell":8,"dir":"E","pred":false,"sp":1},{"id":2,"cell":14,"dir":"N","pred":false,"sp":2},{"id":3,"cell":26,"dir":"N","pred":false,"sp":3},{"id":4,"cell":24,"dir":"E","pred":false,"sp":4},{"id":5,"cell":27,"dir":"S","pred":false,"sp":0},{"id":6,"cell":5,"dir":"W","pred":false,"sp":1},{"id":7,"cell":3,"dir":"S","pred":false,"sp":2},{"id":8,"cell":18,"dir":"S","pred":true,"sp":0},{"id":9,"cell":43,"dir":"E","pred":false,"sp":3},{"id":10,"cell":37,"dir":"S","pred":true,"sp":1},{"id":11,"cell":48,"dir":"S","pred":true,"sp":2},{"id":12,"cell":30,"dir":"W","pred":true,"sp":3},{"id":13,"cell":32,"dir":"S","pred":true,"sp":0},{"id":14,"cell":0,"dir":"N","pred":false,"sp":4},{"id":15,"cell":13,"dir":"E","pred":true,"sp":1},{"id":16,"cell":7,"dir":"W","pred":false,"sp":0},{"id":17,"cell":9,"dir":"N","pred":false,"sp":1},{"id":18,"cell":46,"dir":"S","pred":false,"sp":2},{"id":19,"cell":38,"dir":"S","pred":true,"sp":2},{"id":20,"cell":2,"dir":"N","pred":false,"sp":3}],"plan":[20,19,9,18,17,16,15,14,13,12,11,10,0,3,9,4,8,0,7,6,5,4,1,3,2,1,0],"stats":{"minSlides":1,"gated":5,"fatalStart":8,"moves":27,"fatal":86,"fatalStates":17},"id":15},{"n":7,"rocks":[24,40,39],"animals":[{"id":0,"cell":30,"dir":"W","pred":false,"sp":0},{"id":1,"cell":14,"dir":"E","pred":false,"sp":1},{"id":2,"cell":25,"dir":"N","pred":false,"sp":2},{"id":3,"cell":4,"dir":"N","pred":true,"sp":0},{"id":4,"cell":43,"dir":"E","pred":true,"sp":1},{"id":5,"cell":12,"dir":"W","pred":false,"sp":3},{"id":6,"cell":20,"dir":"N","pred":true,"sp":2},{"id":7,"cell":6,"dir":"E","pred":false,"sp":4},{"id":8,"cell":42,"dir":"W","pred":true,"sp":3},{"id":9,"cell":28,"dir":"N","pred":false,"sp":0},{"id":10,"cell":0,"dir":"N","pred":false,"sp":1},{"id":11,"cell":17,"dir":"N","pred":false,"sp":2},{"id":12,"cell":48,"dir":"S","pred":true,"sp":0},{"id":13,"cell":3,"dir":"N","pred":true,"sp":1},{"id":14,"cell":8,"dir":"W","pred":false,"sp":3},{"id":15,"cell":16,"dir":"S","pred":false,"sp":4},{"id":16,"cell":37,"dir":"W","pred":false,"sp":0},{"id":17,"cell":2,"dir":"N","pred":true,"sp":2},{"id":18,"cell":22,"dir":"W","pred":true,"sp":3},{"id":19,"cell":45,"dir":"S","pred":false,"sp":1},{"id":20,"cell":46,"dir":"S","pred":false,"sp":2},{"id":21,"cell":7,"dir":"W","pred":false,"sp":3}],"plan":[21,20,19,18,17,16,5,1,15,1,4,0,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":5,"fatalStart":9,"moves":28,"fatal":90,"fatalStates":25},"id":16},{"n":7,"rocks":[10,39,8,24],"animals":[{"id":0,"cell":5,"dir":"S","pred":false,"sp":0},{"id":1,"cell":20,"dir":"W","pred":true,"sp":0},{"id":2,"cell":18,"dir":"W","pred":false,"sp":1},{"id":3,"cell":44,"dir":"N","pred":true,"sp":1},{"id":4,"cell":14,"dir":"S","pred":true,"sp":2},{"id":5,"cell":37,"dir":"N","pred":true,"sp":3},{"id":6,"cell":21,"dir":"S","pred":true,"sp":0},{"id":7,"cell":42,"dir":"E","pred":true,"sp":1},{"id":8,"cell":40,"dir":"E","pred":false,"sp":2},{"id":9,"cell":34,"dir":"E","pred":false,"sp":3},{"id":10,"cell":46,"dir":"S","pred":false,"sp":4},{"id":11,"cell":0,"dir":"E","pred":false,"sp":0},{"id":12,"cell":11,"dir":"E","pred":false,"sp":1},{"id":13,"cell":2,"dir":"E","pred":true,"sp":2},{"id":14,"cell":23,"dir":"W","pred":false,"sp":2},{"id":15,"cell":6,"dir":"E","pred":false,"sp":3},{"id":16,"cell":4,"dir":"N","pred":false,"sp":4},{"id":17,"cell":12,"dir":"E","pred":false,"sp":0},{"id":18,"cell":47,"dir":"S","pred":false,"sp":1},{"id":19,"cell":41,"dir":"S","pred":false,"sp":2},{"id":20,"cell":33,"dir":"W","pred":false,"sp":3},{"id":21,"cell":29,"dir":"S","pred":false,"sp":4},{"id":22,"cell":43,"dir":"S","pred":true,"sp":3}],"plan":[22,21,20,19,18,17,16,6,7,15,0,14,5,13,3,12,11,10,9,8,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":8,"moves":28,"fatal":102,"fatalStates":26},"id":17},{"n":7,"rocks":[33,22,36,40],"animals":[{"id":0,"cell":20,"dir":"W","pred":false,"sp":0},{"id":1,"cell":18,"dir":"W","pred":false,"sp":1},{"id":2,"cell":28,"dir":"N","pred":false,"sp":2},{"id":3,"cell":38,"dir":"S","pred":true,"sp":0},{"id":4,"cell":14,"dir":"N","pred":false,"sp":3},{"id":5,"cell":0,"dir":"E","pred":false,"sp":4},{"id":6,"cell":34,"dir":"E","pred":true,"sp":1},{"id":7,"cell":15,"dir":"N","pred":false,"sp":0},{"id":8,"cell":10,"dir":"N","pred":true,"sp":2},{"id":9,"cell":4,"dir":"S","pred":true,"sp":3},{"id":10,"cell":8,"dir":"W","pred":false,"sp":1},{"id":11,"cell":23,"dir":"N","pred":true,"sp":0},{"id":12,"cell":1,"dir":"N","pred":false,"sp":2},{"id":13,"cell":2,"dir":"N","pred":false,"sp":3},{"id":14,"cell":48,"dir":"E","pred":false,"sp":4},{"id":15,"cell":25,"dir":"E","pred":false,"sp":0},{"id":16,"cell":43,"dir":"W","pred":false,"sp":1},{"id":17,"cell":46,"dir":"S","pred":true,"sp":1},{"id":18,"cell":6,"dir":"N","pred":false,"sp":2},{"id":19,"cell":26,"dir":"N","pred":false,"sp":3},{"id":20,"cell":12,"dir":"N","pred":true,"sp":2}],"plan":[20,19,18,17,16,15,14,13,12,0,11,10,1,9,2,8,4,0,7,6,5,2,4,1,3,2,1,0],"stats":{"minSlides":1,"gated":3,"fatalStart":5,"moves":28,"fatal":42,"fatalStates":16},"id":18},{"n":7,"rocks":[24,17,39],"animals":[{"id":0,"cell":43,"dir":"N","pred":true,"sp":0},{"id":1,"cell":15,"dir":"N","pred":true,"sp":1},{"id":2,"cell":29,"dir":"E","pred":false,"sp":0},{"id":3,"cell":6,"dir":"W","pred":true,"sp":2},{"id":4,"cell":41,"dir":"N","pred":false,"sp":1},{"id":5,"cell":0,"dir":"S","pred":true,"sp":3},{"id":6,"cell":5,"dir":"S","pred":true,"sp":0},{"id":7,"cell":2,"dir":"N","pred":false,"sp":2},{"id":8,"cell":19,"dir":"S","pred":false,"sp":3},{"id":9,"cell":31,"dir":"S","pred":false,"sp":4},{"id":10,"cell":26,"dir":"S","pred":false,"sp":0},{"id":11,"cell":8,"dir":"N","pred":true,"sp":1},{"id":12,"cell":3,"dir":"N","pred":false,"sp":1},{"id":13,"cell":38,"dir":"S","pred":false,"sp":2},{"id":14,"cell":32,"dir":"N","pred":false,"sp":3},{"id":15,"cell":7,"dir":"W","pred":true,"sp":2},{"id":16,"cell":47,"dir":"S","pred":false,"sp":4},{"id":17,"cell":40,"dir":"E","pred":false,"sp":0},{"id":18,"cell":28,"dir":"S","pred":false,"sp":1},{"id":19,"cell":48,"dir":"E","pred":false,"sp":2},{"id":20,"cell":42,"dir":"W","pred":true,"sp":3},{"id":21,"cell":27,"dir":"E","pred":false,"sp":3},{"id":22,"cell":13,"dir":"E","pred":true,"sp":0},{"id":23,"cell":11,"dir":"N","pred":false,"sp":4}],"plan":[23,22,4,21,20,19,18,10,17,8,10,16,15,14,13,12,11,10,9,8,7,6,3,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":1,"fatalStart":3,"moves":29,"fatal":71,"fatalStates":27},"id":19},{"n":7,"rocks":[9,37,23],"animals":[{"id":0,"cell":4,"dir":"S","pred":true,"sp":0},{"id":1,"cell":48,"dir":"S","pred":false,"sp":0},{"id":2,"cell":10,"dir":"E","pred":false,"sp":1},{"id":3,"cell":6,"dir":"W","pred":false,"sp":2},{"id":4,"cell":12,"dir":"E","pred":false,"sp":3},{"id":5,"cell":25,"dir":"S","pred":true,"sp":1},{"id":6,"cell":1,"dir":"W","pred":false,"sp":4},{"id":7,"cell":41,"dir":"N","pred":false,"sp":0},{"id":8,"cell":39,"dir":"E","pred":true,"sp":2},{"id":9,"cell":13,"dir":"E","pred":false,"sp":1},{"id":10,"cell":32,"dir":"E","pred":true,"sp":3},{"id":11,"cell":2,"dir":"N","pred":false,"sp":2},{"id":12,"cell":20,"dir":"W","pred":false,"sp":3},{"id":13,"cell":19,"dir":"W","pred":false,"sp":4},{"id":14,"cell":28,"dir":"S","pred":true,"sp":0},{"id":15,"cell":14,"dir":"N","pred":false,"sp":0},{"id":16,"cell":7,"dir":"W","pred":false,"sp":1},{"id":17,"cell":17,"dir":"S","pred":false,"sp":2},{"id":18,"cell":27,"dir":"E","pred":false,"sp":3},{"id":19,"cell":42,"dir":"S","pred":true,"sp":1},{"id":20,"cell":31,"dir":"S","pred":true,"sp":2},{"id":21,"cell":33,"dir":"S","pred":true,"sp":3},{"id":22,"cell":43,"dir":"S","pred":true,"sp":0}],"plan":[22,21,20,14,7,19,18,17,16,15,14,13,7,12,0,3,11,10,9,5,8,7,6,5,4,3,2,1,0],"stats":{"minSlides":1,"gated":3,"fatalStart":7,"moves":29,"fatal":78,"fatalStates":25},"id":20}];
+(function () {
+  const P = POND;
+  const PRED = ['🦁', '🐺', '🦊', '🐯'], PREY = ['🦓', '🐑', '🐰', '🦌', '🐭'];
+  const NAME_PRED = ['lion', 'wolf', 'fox', 'tiger'], NAME_PREY = ['zebra', 'sheep', 'rabbit', 'deer', 'mouse'];
+  const ANG = { E: 0, S: Math.PI / 2, W: Math.PI, N: -Math.PI / 2 };
+  const $ = (id) => document.getElementById(id);
+  const cv = $('cv'), ctx = cv.getContext('2d');
+  let W, H, DPR, G;
+  let save = { level: 1 };
+  try { const r = localStorage.getItem('pond_save'); if (r) save = Object.assign(save, JSON.parse(r)); } catch (e) {}
+  const persist = () => { try { localStorage.setItem('pond_save', JSON.stringify(save)); } catch (e) {} };
+
+  let AC = null;
+  function tone(f, d, type, v, delay) { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const t = AC.currentTime + (delay || 0); const o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v || 0.12, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + 0.02); } catch (e) {} }
+  const sfx = { step: () => tone(300, 0.06, 'triangle', 0.05), drink: (k) => { tone(700 + k * 40, 0.12, 'sine', 0.12); tone(1000 + k * 40, 0.1, 'sine', 0.08, 0.06); }, bump: () => tone(140, 0.12, 'square', 0.05), scare: () => { tone(880, 0.08, 'square', 0.08); tone(660, 0.18, 'sawtooth', 0.06, 0.07); }, win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.2, 'triangle', 0.13, i * 0.09)), fail: () => [392, 311, 247].forEach((f, i) => tone(f, 0.25, 'triangle', 0.12, i * 0.12)) };
+  const buzz = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+  let L, sim, vis, fx, hint, ended, tok = 0;
+  function start(n) {
+    n = Math.max(1, Math.min(LEVELS.length, n)); save.level = n; persist(); tok++;
+    L = LEVELS[n - 1]; sim = P.newSim(L); ended = false; hint = null; fx = [];
+    vis = L.animals.map((a) => ({ x: a.cell % L.n, y: (a.cell / L.n) | 0, path: null, state: 'here', t0: 0, alpha: 1, bump: 0 }));
+    $('lvl').textContent = 'Level ' + n;
+    ['winOv', 'failOv'].forEach((i) => $(i).classList.remove('show'));
+    const RULES = {
+      1: 'Tap an animal. Clear path = it walks to the water and drinks. Blocked = it walks as far as it can and stops.',
+      2: 'Predators have a red shadow. If prey and predator end up side by side, the prey panics and the level is over.',
+      3: 'Sometimes a predator has to leave before a prey can safely move up. Clear the way first.',
+    };
+    $('rules').textContent = RULES[n] || ''; $('rules').style.display = RULES[n] ? '' : 'none';
+    layout(); hud();
+  }
+  function hud() {
+    $('drank').textContent = `💧 ${L.animals.length - sim.left}/${L.animals.length}`;
+    $('spare').textContent = `${sim.taps} moves`;
+  }
+  function layout() {
+    const r = cv.getBoundingClientRect(); DPR = Math.min(devicePixelRatio || 1, 3); W = r.width; H = r.height;
+    cv.width = W * DPR; cv.height = H * DPR;
+    if (!L) return;
+    const top = 64, bot = L.id <= 3 ? 90 : 30;
+    const avail = Math.min(W - 56, H - top - bot - 56);
+    const cs = Math.floor(avail / L.n);
+    G = { cs, ox: Math.round((W - cs * L.n) / 2), oy: Math.round(top + (H - top - bot - cs * L.n) / 2) };
+  }
+  addEventListener('resize', layout);
+  const cellXY = (x, y) => [G.ox + (x + 0.5) * G.cs, G.oy + (y + 0.5) * G.cs];
+
+  cv.addEventListener('pointerdown', (e) => {
+    if (ended || sim.won || sim.lost) return;
+    const r = cv.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
+    const x = Math.floor((px - G.ox) / G.cs), y = Math.floor((py - G.oy) / G.cs);
+    if (x < 0 || y < 0 || x >= L.n || y >= L.n) return;
+    const id = sim.pos.indexOf(y * L.n + x);
+    if (id < 0) return;
+    act(id);
+  });
+  function act(id) {
+    const a = L.animals[id], v = vis[id], now = performance.now();
+    const r = P.tap(sim, id);
+    hint = null;
+    if (!r) return;
+    if (r.type === 'bump') { v.bump = now; sfx.bump(); buzz(8); return; }
+    const T = tok, [dx, dy] = P.D[a.dir];
+    const sx = v.x, sy = v.y;
+    let tEnd;
+    if (r.type === 'drink') {
+      v.path = { sx, sy, ex: sx + dx * r.steps, ey: sy + dy * r.steps, t0: now, dur: 80 * r.steps + 120 };
+      v.state = 'drinking'; tEnd = v.path.dur;
+      const drank = L.animals.length - sim.left;
+      setTimeout(() => { if (T !== tok) return; sfx.drink(drank % 8); fx.push({ t: 'splash', x: sx + dx * r.steps, y: sy + dy * r.steps, t0: performance.now() }); }, v.path.dur);
+    } else {
+      const ex = r.to % L.n, ey = (r.to / L.n) | 0;
+      v.path = { sx, sy, ex, ey, t0: now, dur: 80 * r.steps + 60 }; tEnd = v.path.dur;
+      setTimeout(sfx.step, 30);
+      if (r.enemy >= 0) setTimeout(() => {
+        if (T !== tok) return;
+        sfx.scare(); buzz([20, 30, 20]);
+        const preyId = a.pred ? r.enemy : id, pv = vis[preyId];
+        fx.push({ t: 'bang', x: a.pred ? pv.x : ex, y: a.pred ? pv.y : ey, t0: performance.now() });
+        vis[a.pred ? id : r.enemy].glare = performance.now();
+      }, v.path.dur);
+    }
+    hud();
+    if (sim.lost) {
+      ended = true;
+      const prey = a.pred ? L.animals[r.enemy] : a, pr = a.pred ? a : L.animals[r.enemy];
+      setTimeout(() => { if (T !== tok) return; sfx.fail();
+        $('failE').textContent = PREY[prey.sp]; $('failT').textContent = `The ${NAME_PREY[prey.sp]} is too scared!`;
+        $('failP').textContent = `It ended up right next to the ${NAME_PRED[pr.sp]}. Never let prey stop beside a predator.`;
+        $('failOv').classList.add('show'); }, tEnd + 700);
+    } else if (sim.won) {
+      ended = true;
+      setTimeout(() => { if (T !== tok) return; sfx.win();
+        $('winT').textContent = 'Everyone drank!'; $('winP').textContent = `${sim.taps} moves.`;
+        $('winOv').classList.add('show'); }, tEnd + 500);
+    }
+  }
+  $('hintB').onclick = () => {
+    if (ended) return;
+    const r = P.solve(L, sim, { budget: 80000 });
+    if (r.ok) hint = { id: r.path[0], t0: performance.now() };
+    else toast(r.ok === false ? 'Stuck: no way to finish from here. Restart.' : 'Too deep for a quick hint');
+  };
+  $('retryB').onclick = () => start(L.id);
+  $('nextB').onclick = () => start(L.id + 1);
+  $('failB').onclick = () => start(L.id);
+  $('menuB').onclick = () => {
+    const l = $('lvList'); l.innerHTML = '';
+    for (const lv of LEVELS) { const d = document.createElement('div'); d.className = 'row'; const np = lv.animals.filter((a) => a.pred).length;
+      d.innerHTML = `<b>${lv.id}</b><span>${lv.n}×${lv.n} · ${lv.animals.length} animals · ${np} predators</span><span>${lv.stats.gated} gated · ${lv.stats.minSlides} stop${lv.stats.minSlides > 1 ? 's' : ''} needed</span>`;
+      d.onclick = () => { $('menuOv').classList.remove('show'); start(lv.id); }; l.appendChild(d); }
+    $('menuOv').classList.add('show');
+  };
+  $('closeM').onclick = () => $('menuOv').classList.remove('show');
+  let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
+
+  function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!L || !G) return;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // water
+    const gr = ctx.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#3aa6cf'); gr.addColorStop(1, '#1f7aa3');
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 14; i++) { const y = (i * 67 + now / 40) % H, x = (i * 131) % W; ctx.beginPath(); ctx.arc(x, y, 14 + (i % 3) * 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); }
+    const { cs, ox, oy } = G, n = L.n;
+    // shore + meadow
+    ctx.fillStyle = '#e8d49a'; rr(ox - 14, oy - 14, cs * n + 28, cs * n + 28, 22); ctx.fill();
+    ctx.fillStyle = '#7cc46a'; rr(ox - 4, oy - 4, cs * n + 8, cs * n + 8, 16); ctx.fill();
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { if ((x + y) % 2) { ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fillRect(ox + x * cs, oy + y * cs, cs, cs); } }
+    ctx.font = `${Math.round(cs * 0.62)}px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const r of L.rocks) { const [cx, cy] = cellXY(r % n, (r / n) | 0); ctx.fillText('🪨', cx, cy + 2); }
+    // animals
+    for (let i = 0; i < L.animals.length; i++) {
+      const a = L.animals[i], v = vis[i];
+      if (v.state === 'gone') continue;
+      let x = v.x, y = v.y, alpha = 1, hop = 0;
+      if (v.path) {
+        const p = Math.max(0, Math.min(1, (now - v.path.t0) / v.path.dur));
+        x = v.path.sx + (v.path.ex - v.path.sx) * p; y = v.path.sy + (v.path.ey - v.path.sy) * p;
+        hop = Math.abs(Math.sin(p * Math.PI * Math.max(1, Math.abs(v.path.ex - v.path.sx) + Math.abs(v.path.ey - v.path.sy)))) * cs * 0.12;
+        if (v.state === 'drinking' && p >= 1) { alpha = Math.max(0, 1 - (now - v.path.t0 - v.path.dur) / 400); if (alpha <= 0) v.state = 'gone'; }
+        if (v.state === 'fleeing') { alpha = 1 - p; if (p >= 1) v.state = 'gone'; }
+        if (p >= 1 && v.state === 'here') { v.x = v.path.ex; v.y = v.path.ey; v.path = null; }
+      }
+      if (v.bump) { const p = (now - v.bump) / 220; if (p < 1) { const [dx, dy] = P.D[a.dir]; const k = Math.sin(p * Math.PI) * 0.18; x += dx * k; y += dy * k; } else v.bump = 0; }
+      const [cx, cy0] = cellXY(x, y), cy = cy0 - hop;
+      ctx.save(); ctx.globalAlpha = alpha;
+      // base disc: warm for predators, cool for prey
+      const gl = a.pred && v.glare && now - v.glare < 1200 ? 0.35 * (0.5 + 0.5 * Math.sin((now - v.glare) / 70)) : 0;
+      ctx.fillStyle = a.pred ? `rgba(214,72,52,${0.32 + gl})` : 'rgba(255,255,255,.4)';
+      ctx.beginPath(); ctx.ellipse(cx, cy0 + cs * 0.26, cs * 0.36, cs * 0.12, 0, 0, 6.283); ctx.fill();
+      // arrow
+      const ang = ANG[a.dir];
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang);
+      ctx.beginPath(); ctx.moveTo(cs * 0.47, 0); ctx.lineTo(cs * 0.33, -cs * 0.12); ctx.lineTo(cs * 0.33, cs * 0.12); ctx.closePath();
+      ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(20,40,30,.7)'; ctx.stroke();
+      ctx.restore();
+      const flip = a.dir === 'E' ? -1 : 1; // emoji face left by default
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(flip, 1);
+      ctx.font = `${Math.round(cs * 0.6)}px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+      ctx.fillText(a.pred ? PRED[a.sp] : PREY[a.sp], 0, 2);
+      ctx.restore();
+      ctx.restore();
+    }
+    // effects
+    fx = fx.filter((f) => now - f.t0 < 700);
+    for (const f of fx) {
+      const p = (now - f.t0) / 700, [cx, cy] = cellXY(f.x, f.y);
+      if (f.t === 'splash') { ctx.strokeStyle = `rgba(255,255,255,${1 - p})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, cy, cs * (0.2 + p * 0.6), 0, 6.283); ctx.stroke(); ctx.font = `${Math.round(cs * 0.4)}px sans-serif`; ctx.fillText('💧', cx, cy - cs * 0.5 * p); }
+      if (f.t === 'danger') { ctx.strokeStyle = `rgba(230,40,30,${1 - p})`; ctx.lineWidth = 4; ctx.strokeRect(ox + f.x * cs + 3, oy + f.y * cs + 3, cs - 6, cs - 6); }
+      if (f.t === 'bang') { ctx.font = `900 ${Math.round(cs * 0.55)}px system-ui,sans-serif`; ctx.fillStyle = `rgba(255,220,40,${1 - p})`; ctx.strokeStyle = `rgba(80,20,0,${1 - p})`; ctx.lineWidth = 4; ctx.strokeText('!', cx, cy - cs * (0.5 + p * 0.3)); ctx.fillText('!', cx, cy - cs * (0.5 + p * 0.3)); }
+    }
+    if (hint && sim.pos[hint.id] >= 0) {
+      const v = vis[hint.id], [cx, cy] = cellXY(v.x, v.y), p = ((now - hint.t0) % 1000) / 1000;
+      ctx.strokeStyle = `rgba(255,214,50,${1 - p})`; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(cx, cy, cs * (0.45 + p * 0.4), 0, 6.283); ctx.stroke();
+    }
+  }
+  window.__pond = { get sim() { return sim; }, get L() { return L; }, start, cellXY: (x, y) => cellXY(x, y) };
+  layout(); start(save.level || 1); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
